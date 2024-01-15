@@ -1,92 +1,110 @@
 [
-    {
-      "name": "Star Wars T-shirt",
-      "description": "A classic Star Wars t-shirt featuring iconic characters.",
-      "price": 19.99,
-      "thumbnail": "https://example.com/star-wars-tshirt.jpg",
-      "code": "SWTSHRT001",
-      "stock": 25,
-      "id": 1
-    },
-    {
-      "name": "Star Wars Mug",
-      "description": "A ceramic Star Wars mug with a cool design.",
-      "price": 9.99,
-      "thumbnail": "https://example.com/star-wars-mug.jpg",
-      "code": "SWMUG002",
-      "stock": 15,
-      "id": 2
-    },
-    {
-      "name": "Star Wars Action Figure",
-      "description": "A highly detailed Star Wars action figure.",
-      "price": 29.99,
-      "thumbnail": "https://example.com/star-wars-action-figure.jpg",
-      "code": "SWACTFIG003",
-      "stock": 10,
-      "id": 3
-    },
-    {
-      "name": "Star Wars Backpack",
-      "description": "A durable Star Wars backpack for school or travel.",
-      "price": 39.99,
-      "thumbnail": "https://example.com/star-wars-backpack.jpg",
-      "code": "SWBKPCK004",
-      "stock": 5,
-      "id": 4
-    },
-    {
-      "name": "Star Wars Keychain",
-      "description": "A metal Star Wars keychain with a keyring.",
-      "price": 4.99,
-      "thumbnail": "https://example.com/star-wars-keychain.jpg",
-      "code": "SWKYCHN005",
-      "stock": 20,
-      "id": 5
-    },
-    {
-      "name": "Star Wars Poster",
-      "description": "A high-quality Star Wars poster for fans.",
-      "price": 14.99,
-      "thumbnail": "https://example.com/star-wars-poster.jpg",
-      "code": "SWPSTR006",
-      "stock": 30,
-      "id": 6
-    },
-    {
-      "name": "Star Wars Hoodie",
-      "description": "A cozy Star Wars hoodie with a front pocket.",
-      "price": 49.99,
-      "thumbnail": "https://example.com/star-wars-hoodie.jpg",
-      "code": "SWHDIE007",
-      "stock": 8,
-      "id": 7
-    },
-    {
-      "name": "Star Wars Phone Case",
-      "description": "A protective Star Wars phone case for various models.",
-      "price": 12.99,
-      "thumbnail": "https://example.com/star-wars-phone-case.jpg",
-      "code": "SWPHCS008",
-      "stock": 12,
-      "id": 8
-    },
-    {
-      "name": "Star Wars Socks",
-      "description": "A set of Star Wars-themed socks for men and women.",
-      "price": 7.99,
-      "thumbnail": "https://example.com/star-wars-socks.jpg",
-      "code": "SWSOCKS009",
-      "stock": 18,
-      "id": 9
-    },
-    {
-      "name": "Star Wars Calendar",
-      "description": "A 12-month Star Wars wall calendar with stunning artwork.",
-      "price": 16.99,
-      "thumbnail": "https://example.com/star-wars-calendar.jpg",
-      "code": "SWCLNDR010",
-      "stock": 3,
-      "id": 10
-    }
-  ]
+  {
+    "title": "Star Wars T-shirt",
+    "description": "A classic Star Wars t-shirt featuring iconic characters.",
+    "price": 19.99,
+    "thumbnails": [
+      "https://example.com/star-wars-tshirt.jpg",
+      "https://example.com/star-wars-tshirt-2.jpg"
+    ],
+    "code": "SWTSHRT001",
+    "stock": 25,
+    "id": 1
+  },
+  {
+    "title": "Star Wars Mug",
+    "description": "A ceramic Star Wars mug with a cool design.",
+    "price": 9.99,
+    "thumbnails": [
+      "https://example.com/star-wars-mug.jpg",
+      "https://example.com/star-wars-mug-2.jpg"
+    ],
+    "code": "SWMUG002",
+    "stock": 15,
+    "id": 2
+  },
+  {
+    "title": "Star Wars Action Figure",
+    "description": "A highly detailed Star Wars action figure.",
+    "price": 29.99,
+    "thumbnails": [
+      "https://example.com/star-wars-action-figure.jpg",
+      "https://example.com/star-wars-action-figure-2.jpg"
+    ],
+    "code": "SWACTFIG003",
+    "stock": 10,
+    "id": 3
+  },
+  {
+    "title": "Star Wars Backpack",
+    "description": "A durable Star Wars backpack for school or travel.",
+    "price": 39.99,
+    "thumbnails": [
+      "https://example.com/star-wars-backpack.jpg",
+      "https://example.com/star-wars-backpack-2.jpg"
+    ],
+    "code": "SWBKPCK004",
+    "stock": 5,
+    "id": 4
+  },
+  {
+    "title": "Star Wars Keychain",
+    "description": "A metal Star Wars keychain with a keyring.",
+    "price": 4.99,
+    "thumbnails": [
+      "https://example.com/star-wars-keychain.jpg",
+      "https://example.com/star-wars-keychain-2.jpg"
+    ],
+    "code": "SWKYCHN005",
+    "stock": 20,
+    "id": 5
+  },
+  {
+    "title": "Star Wars Poster",
+    "description": "A high-quality Star Wars poster for fans.",
+    "price": 14.99,
+    "thumbnails": [
+      "https://example.com/star-wars-poster.jpg",
+      "https://example.com/star-wars-poster-2.jpg"
+    ],
+    "code": "SWPSTR006",
+    "stock": 30,
+    "id": 6
+  },
+  {
+    "title": "Star Wars Hoodie",
+    "description": "A cozy Star Wars hoodie with a front pocket.",
+    "price": 49.99,
+    "thumbnails": [
+      "https://example.com/star-wars-hoodie.jpg",
+      "https://example.com/star-wars-hoodie-2.jpg"
+    ],
+    "code": "SWHDIE007",
+    "stock": 8,
+    "id": 7
+  },
+  {
+    "title": "Star Wars Phone Case",
+    "description": "A protective Star Wars phone case for various models.",
+    "price": 12.99,
+    "thumbnails": [
+      "https://example.com/star-wars-phone-case.jpg",
+      "https://example.com/star-wars-phone-case-2.jpg"
+    ],
+    "code": "SWPHCS008",
+    "stock": 12,
+    "id": 8
+  },
+  {
+    "title": "producto prueba actualizado",
+    "description": "A set of Star Wars-themed socks for men and women.",
+    "price": 7.99,
+    "thumbnails": [
+      "https://example.com/star-wars-socks.jpg",
+      "https://example.com/star-wars-socks-2.jpg"
+    ],
+    "code": "SWSOCKS009",
+    "stock": 18,
+    "id": 9
+  }
+]

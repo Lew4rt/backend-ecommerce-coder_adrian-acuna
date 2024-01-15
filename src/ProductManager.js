@@ -36,10 +36,10 @@ class ProductManager {
     }
 
     addProduct(product) {
-        const { title, description, price, thumbnail, code, stock } = product;
+        const { title, description, price, status = true, thumbnails = [], code, stock } = product;
 
-        if (!title || !description || !price || !thumbnail || !code || !stock) {
-            throw new Error("Todos los campos son obligatorios");
+        if (!title || !description || !price || !status || !code || !stock) {
+            throw new Error("Todos los campos excepto las imágenes son obligatorios");
         }
 
         const codeExists = this.products.some((p) => p.code === code);
