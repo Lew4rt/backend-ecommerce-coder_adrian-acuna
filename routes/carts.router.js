@@ -35,7 +35,7 @@ async function saveCartData(req, res, next) {
         const data = JSON.stringify(req.cartData, null, 2);
         await fs.writeFile(cartFilePath, data, 'utf-8');
     } catch (error) {
-        console.error('Error saving cart data:', error);
+        console.error('Error guardando datos del carrito:', error);
     }
     next();
 }
@@ -59,7 +59,7 @@ cartRouter.get('/:cid', loadCartData, (req, res) => {
     const cart = req.cartData.carts.find((c) => c.id === cartId);
 
     if (!cart) {
-        return res.status(404).json({ error: 'Cart not found' });
+        return res.status(404).json({ error: 'Carrito no encontrado' });
     }
 
     res.json(cart.products);
@@ -74,7 +74,7 @@ cartRouter.post('/:cid/product/:pid', loadCartData, (req, res, next) => {
     const cart = req.cartData.carts.find((c) => c.id === cartId);
 
     if (!cart) {
-        return res.status(404).json({ error: 'Cart not found' });
+        return res.status(404).json({ error: 'Carrito no encontrado' });
     }
 
     const existingProduct = cart.products.find((p) => p.product === productId);
