@@ -60,18 +60,6 @@
     "id": 5
   },
   {
-    "title": "Star Wars Poster",
-    "description": "A high-quality Star Wars poster for fans.",
-    "price": 14.99,
-    "thumbnails": [
-      "https://example.com/star-wars-poster.jpg",
-      "https://example.com/star-wars-poster-2.jpg"
-    ],
-    "code": "SWPSTR006",
-    "stock": 30,
-    "id": 6
-  },
-  {
     "title": "Star Wars Hoodie",
     "description": "A cozy Star Wars hoodie with a front pocket.",
     "price": 49.99,

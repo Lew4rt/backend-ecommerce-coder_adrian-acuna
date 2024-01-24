@@ -1,0 +1,25 @@
+<body>
+    <h1>Real Time Products</h1>
+
+    <!-- Formulario para agregar productos -->
+    <form id="addProductForm">
+        <p>Product:</p>
+        <input type="text" id="productTitle" name="title" placeholder="Title..." required="true" />
+        <input type="text" id="productDescription" name="description" placeholder="Description..." required="true" />
+        <input type="text" id="productPrice" name="price" placeholder="Price..." required="true" />
+        <input type="text" id="productCode" name="code" placeholder="Code..." required="true" />
+        <input type="text" id="productStock" name="stock" placeholder="Stock..." required="true" />
+        <button type="submit">Add Product</button>
+    </form>
+
+    <!-- Lista de productos -->
+    <ul id="productList">
+        {{#each products}}
+            <li>{{this.title}} - {{this.price}} <button class="deleteProductButton" data-productid="{{this.id}}">Delete product</button></li>
+        {{/each}}
+    </ul>
+
+    <!-- Script para manejar websockets y el formulario -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/realTimeProductsSocket.js"></script>
+</body>

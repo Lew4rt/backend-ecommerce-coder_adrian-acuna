@@ -1,4 +1,4 @@
-const fs = require('fs')
+import fs from 'fs/promises';
 
 class ProductManager {
     constructor() {
@@ -7,12 +7,11 @@ class ProductManager {
         this.productIdCounter = 1;
     }
 
-    loadProducts() {
+    async loadProducts() {
         try {
-            const data = fs.readFileSync(this.path, 'utf-8');
+            const data = await fs.readFile(this.path, 'utf-8');
             if (data) {
                 this.products = JSON.parse(data);
-                // Encontrar el último ID para continuar con la autoincrementación
                 const lastProduct = this.products[this.products.length - 1];
                 if (lastProduct) {
                     this.productIdCounter = lastProduct.id + 1;
@@ -20,16 +19,15 @@ class ProductManager {
             }
 
         } catch (err) {
-            // Si hay un error al leer el archivo, se asume que aún no hay productos
             this.products = [];
             console.error('Error al cargar productos:', err);
         }
     }
 
-    saveProducts() {
+    async saveProducts() {
         try {
             const data = JSON.stringify(this.products, null, 2);
-            fs.writeFileSync(this.path, data, 'utf-8');
+            await fs.writeFile(this.path, data, 'utf-8');
         } catch (err) {
             console.error('Error al guardar los productos:', err);
         }
@@ -75,7 +73,9 @@ class ProductManager {
     }
 
     deleteProduct(id) {
-        const index = this.products.findIndex((product) => product.id === id);
+        const productId = Number(id);
+    
+        const index = this.products.findIndex((product) => product.id === productId);
         if (index !== -1) {
             this.products.splice(index, 1);
             this.saveProducts();
@@ -83,6 +83,17 @@ class ProductManager {
         }
         return false;
     }
+
+    // Implementé un singleton para utilizar el mismo ProductManager en diferentes archivos
+
+    static instance;
+
+    static getInstance() {
+        if (!ProductManager.instance) {
+            ProductManager.instance = new ProductManager();
+        }
+        return ProductManager.instance;
+    }
 }
 
-module.exports = ProductManager;
+export default ProductManager;

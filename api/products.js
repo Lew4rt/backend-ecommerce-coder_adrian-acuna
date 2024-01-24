@@ -1,11 +1,9 @@
-const express = require('express');
-
+import express from 'express';
 const router = express.Router();
 
-const ProductManager = require('../src/ProductManager');
-const productManager = new ProductManager();
+import ProductManager from '../src/ProductManager.js';
+const productManager = ProductManager.getInstance();
 
-// Cargo los productos al iniciar el servidor
 productManager.loadProducts();
 
 router.get('/', async (req, res) => {
@@ -23,7 +21,7 @@ router.get('/', async (req, res) => {
     } catch (error) {
        res.status(500).json({ error: error.message });
     }
- });
+});
 
 router.get('/:pid', async (req, res) => {
     try {
@@ -79,4 +77,4 @@ router.delete('/:pid', async (req, res) => {
    }
 });
 
- module.exports = router;
+export default router;
