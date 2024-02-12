@@ -1,8 +1,12 @@
 <div>
-    <h1>Lista de Productos</h1>
-    <ul>
-        {{#each products}}
-            <li>{{this.title}} - {{this.price}}</li>
-        {{/each}}
-    </ul>
+  <h1>Lista de Productos</h1>
+  <ul>
+    {{#each products}}
+      <li>{{this.title}} - {{this.price}}</li>
+    {{/each}}
+  </ul>
+  <ul>
+    <li><a href="/realTimeProducts">Ver productos en tiempo real</a></li>
+    <li><a href="/chat">Ingresar al chat</a></li>
+  </ul>
 </div>

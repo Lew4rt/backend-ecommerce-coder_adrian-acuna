@@ -5,19 +5,32 @@ import viewsRouter from './routes/views.router.js';
 import { Server } from 'socket.io';
 import routerProducts from '../api/products.js';
 import routerCarts from '../api/carts.js';
-import ProductManager from './ProductManager.js';
+// import ProductManager from './dao/ProductManager.js';
+import mongoose from 'mongoose';
+import ProductsDAO from './dao/products.dao.js';
+import MessagesDao from './dao/messages.dao.js';
 
 const PORT = 8080;
 
 const app = express();
 app.use(express.json())
+
+// Inicialización de servidor
 const httpServer = app.listen(PORT, () =>
    console.log(`Servidor Express escuchando en el puerto ${PORT}`)
 );
+
+// Inicialización de websockets
 const io = new Server(httpServer);
 
-const productManager = ProductManager.getInstance();
-productManager.loadProducts();
+// Conexión a MongoDB usando mongoose
+mongoose.connect("mongodb://localhost:27017/ecommerce")
+
+// Instancio ProductManager (Esta clase utiliza filesystem, no utiliza mongo, así que no tiene caso mantenerlo, 
+// lo dejo comentado porque la entrega pide que no lo borremos)
+
+// const productManager = ProductManager.getInstance();
+// productManager.loadProducts();
 
 app.use(express.urlencoded({ extended: true }))
 
@@ -29,28 +42,29 @@ app.set("view engine", "handlebars");
 // Middleware para servir archivos estáticos
 app.use(express.static(path + "/public"));
 
-app.use('/', viewsRouter)
-
+// Funciones de websockets en tiempo real (Adaptadas a mongo para la primera entrega integradora)
+let messages = [];
 io.on('connection', (socket) => {
    console.log('Usuario conectado');
    // Manejar la adición de productos
-   socket.on('addProduct', (product) => {
+   socket.on('addProduct', async (product) => {
       try {
-         productManager.addProduct(product);
+         await ProductsDAO.add(product);
          console.log('Producto agregado con éxito');
          // Emitir evento de actualización a todos los clientes conectados
-         io.emit('updateProducts', productManager.getProducts());
+         io.emit('updateProducts', await ProductsDAO.getAll());
       } catch (error) {
          console.error('Error al agregar el producto:', error.message);
       }
    });
-   socket.on('deleteProduct', (productId) => {
+   socket.on('deleteProduct', async (productId) => {
       try {
-         const success = productManager.deleteProduct(productId);
+         const success = await ProductsDAO.delete(productId);
          if (success) {
             console.log('Producto eliminado con éxito');
             // Emitir evento de actualización a todos los clientes conectados
-            io.emit('updateProducts', productManager.getProducts());
+            const updatedProducts = await ProductsDAO.getAll()
+            io.emit('updateProducts', updatedProducts);
          } else {
             console.error('Producto no encontrado');
          }
@@ -58,7 +72,21 @@ io.on('connection', (socket) => {
          console.error('Error al eliminar el producto:', error.message);
       }
    });
+   socket.on('message', data => {
+      messages.push(data)
+      // Función que guarda el mensaje en mongoDB
+      MessagesDao.saveMessageToDatabase(data.user, data.message);
+      io.emit('messageLogs', messages)
+   })
+   socket.on('login', data => {
+      socket.emit('messageLogs', messages)
+      console.log(data)
+      socket.broadcast.emit('register', data)
+   })
+
 });
 
+// Conexión a los respectivos routers
+app.use('/', viewsRouter)
 app.use("/products", routerProducts)
 app.use("/cart", routerCarts)

@@ -38,8 +38,9 @@ socket.on('updateProducts', (products) => {
     productList.innerHTML = '';
 
     products.forEach((product) => {
+        console.log(product)
         const listItem = document.createElement('li');
-        listItem.innerHTML = `${product.title} - ${product.price} <button class="deleteProductButton" data-productid="${product.id}">Delete product</button>`;
+        listItem.innerHTML = `${product.title} - ${product.price} <button class="deleteProductButton" data-productid="${product._id}">Delete product</button>`;
         productList.appendChild(listItem);
     });
 

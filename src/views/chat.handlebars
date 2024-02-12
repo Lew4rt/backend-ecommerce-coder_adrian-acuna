@@ -1,0 +1,17 @@
+<div>
+  <ul>
+    <li><a href="/">Volver al home</a></li>
+    <li><a href="/realTimeProducts">Ver productos en tiempo real</a></li>
+  </ul>
+  <h1>Chat</h1>
+  <div>
+    <input type="text" placeholder="Ingrese un mensaje..." id="chatBox" />
+  </div>
+  <div>
+    <p id="messageLogs"></p>
+  </div>
+</div>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="module" src="/js/chatSocket.js"></script>

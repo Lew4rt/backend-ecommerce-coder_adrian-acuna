@@ -7,7 +7,7 @@
     "id": 2,
     "products": [
       {
-        "product": 4,
+        "productId": "65ba56c381135340299b22f7",
         "quantity": 2
       }
     ]
@@ -16,9 +16,13 @@
     "id": 3,
     "products": [
       {
-        "product": 8,
+        "productId": "65c7aceb891376a72dac9ce0",
         "quantity": 3
       }
     ]
+  },
+  {
+    "id": 4,
+    "products": []
   }
 ]
