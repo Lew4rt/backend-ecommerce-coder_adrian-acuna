@@ -10,22 +10,46 @@ const router = express.Router();
 
 // productManager.loadProducts();
 
-router.get('/', async (req, res) => {
-   try {
-      let limit = req.query.limit;
-      let products;
+// Acá al igual que en views, decidí implementar un middleware que convierte lo que recibo en query a objeto Json, para que pueda funcionar con el filter del método paginate
+const parseQueryMiddleware = (req, res, next) => {
+   const { query } = req.query;
 
-      if (limit) {
-         products = await ProductsDAO.getAll().slice(0, +limit);
-      } else {
-         products = await ProductsDAO.getAll();
-      }
+   if (query) {
+       try {
+           const parsedQuery = query.split('&').reduce((acc, pair) => {
+               const [key, value] = pair.split('=');
+               acc[key] = value;
+               return acc;
+           }, {});
+
+           req.parsedQuery = parsedQuery;
+       } catch (error) {
+           return res.status(400).json({ error: 'Invalid query parameter format' });
+       }
+   }
+
+   next();
+};
+
+
+router.get('/', parseQueryMiddleware, async (req, res) => {
+   try {
+      const { limit, page, sort } = req.query;
+      const query = req.parsedQuery;
+
+      const products = await ProductsDAO.getAll({
+         limit,
+         page,
+         sort,
+         query: query,
+      });
 
       res.json(products);
    } catch (error) {
       res.status(500).json({ error: error.message });
    }
 });
+
 
 router.get('/:pid', async (req, res) => {
    try {

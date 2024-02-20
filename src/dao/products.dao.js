@@ -2,9 +2,36 @@ import products from "./models/products.schema.js";
 
 class ProductsDAO {
 
-    static async getAll() {
+    static async getAll({ limit = 10, page = 1, sort, query } = {}) {
         try {
-            return await products.find().lean();
+            let options = {
+                page: +page,
+                limit: +limit,
+                sort: sort ? { price: sort === 'desc' ? -1 : 1 } : undefined,
+                lean: true,
+            };
+
+            let filter = {};
+            if (query) {
+                filter = query;
+            }
+
+            const result = await products.paginate(filter, options);
+
+            const response = {
+                status: 'success',
+                payload: result.docs,
+                totalPages: result.totalPages,
+                prevPage: result.prevPage,
+                nextPage: result.nextPage,
+                page: result.page,
+                hasPrevPage: result.hasPrevPage,
+                hasNextPage: result.hasNextPage,
+                prevLink: result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}&limit=${limit}` : null,
+                nextLink: result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}&limit=${limit}` : null,
+            };
+
+            return response;
         } catch (err) {
             throw new Error('Failed to get products');
         }
@@ -21,7 +48,7 @@ class ProductsDAO {
 
     static async getById(id) {
         try {
-            return await products.findById(id);
+            return await products.findById(id).lean();
         } catch (err) {
             throw new Error('Failed to get product by ID');
         }

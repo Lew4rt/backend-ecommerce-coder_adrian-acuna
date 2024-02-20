@@ -88,5 +88,7 @@ io.on('connection', (socket) => {
 
 // Conexión a los respectivos routers
 app.use('/', viewsRouter)
-app.use("/products", routerProducts)
+// En la segunda preentrega nos piden que en el router de views exista un /products, lo cual pisa al actual routerProducts.
+// Para solucionar esto, cambio la ruta de acceso de products a productsApi, pero me gustaría tener una devolución al respecto de como debería hacerlo.
+app.use("/productsApi", routerProducts)
 app.use("/cart", routerCarts)

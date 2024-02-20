@@ -1,0 +1,85 @@
+<div>
+  <h1>Lista de productos paginados</h1>
+  <ul>
+    {{#each data.payload}}
+       <li>
+        <a href="/products/{{this.id}}">
+          {{this.title}} - {{this.price}}
+        </a>
+      </li>
+      <form class="addToCartForm">
+          <input type="hidden" name="productId" value="{{this.id}}">
+          <button type="button" onclick="addToCart(this)">Add to Cart</button>
+      </form>
+    {{/each}}
+  </ul>
+    &nbsp;
+  <div>
+    {{#if data.hasPrevPage}}
+        <a href={{data.prevLink}}><< Anterior</a>
+    {{/if}}
+    &nbsp;
+    {{data.page}}
+    &nbsp;
+     {{#if data.hasNextPage}}
+        <a href={{data.nextLink}}>Siguiente >></a>
+    {{/if}} 
+  </div>
+    &nbsp;
+  <div>
+    <a id="cartLink" href="#">Go to Cart</a>
+  </div>
+</div>
+
+{{!-- Al no implementar todavía un sistema de login, decidí guardar el cartId en un localStorage y utilizarlo directamente de ahí --}}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const cartId = localStorage.getItem('cartId');
+
+    if (!cartId || cartId === undefined) {
+      fetch('/cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          localStorage.setItem('cartId', data.cartId);
+
+          const cartLink = document.getElementById('cartLink');
+          cartLink.href = `/carts/${data.cartId}`;
+        })
+        .catch(error => console.error('Error creating cart:', error));
+    } else {
+      const cartLink = document.getElementById('cartLink');
+      cartLink.href = `/carts/${cartId}`;
+    }
+  });
+</script>
+<script>
+  function addToCart(button) {
+    const form = button.closest('.addToCartForm');
+    const productId = form.querySelector('input[name="productId"]').value;
+    const cartId = localStorage.getItem('cartId');
+
+    if (!cartId){
+        console.error("Carrito no encontrado")
+        return
+    }
+
+    fetch(`/cart/${productId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ cartId }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Producto agregado al carrito');
+    })
+    .catch(error => console.error('Error:', error));
+  }
+</script>
