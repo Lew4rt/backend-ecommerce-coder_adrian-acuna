@@ -24,7 +24,7 @@ const httpServer = app.listen(PORT, () =>
 const io = new Server(httpServer);
 
 // Conexión a MongoDB usando mongoose
-mongoose.connect("mongodb://localhost:27017/ecommerce")
+mongoose.connect("mongodb+srv://lew4rt:daeq312ws@lyj-db.2wrf87p.mongodb.net/")
 
 // Instancio ProductManager (Esta clase utiliza filesystem, no utiliza mongo, así que no tiene caso mantenerlo, 
 // lo dejo comentado porque la entrega pide que no lo borremos)
