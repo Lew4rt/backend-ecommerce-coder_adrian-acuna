@@ -1,6 +1,7 @@
 import express from 'express';
 import ProductsDAO from '../dao/products.dao.js';
 import CartsDAO from '../dao/carts.dao.js';
+import UsersDAO from '../dao/users.dao.js';
 
 const viewsRouter = express.Router();
 
@@ -61,16 +62,24 @@ const parseQueryMiddleware = (req, res, next) => {
 
 viewsRouter.get('/products', parseQueryMiddleware, async (req, res) => {
     try {
-        const { limit, page, sort } = req.query;
-        const query = req.parsedQuery;
-        const productsData = await ProductsDAO.getAll({
-            limit,
-            page,
-            sort,
-            query: query,
-        });
+        if (req.session.user) {
+            const user = await UsersDAO.getByID(req.session.user);
+            const { limit, page, sort } = req.query;
+            const query = req.parsedQuery;
+            const productsData = await ProductsDAO.getAll({
+                limit,
+                page,
+                sort,
+                query: query,
+            });
 
-        res.render('products', { data: productsData })
+            res.render('products', { data: productsData, user: user })
+
+        } else {
+            res.redirect("/sessions/login");
+        }
+
+
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -78,25 +87,44 @@ viewsRouter.get('/products', parseQueryMiddleware, async (req, res) => {
 
 viewsRouter.get('/products/:productId', async (req, res) => {
     try {
-      const productId = req.params.productId;
-      const product = await ProductsDAO.getById(productId);
-  
-      res.render('productDetail', { product });
+        const productId = req.params.productId;
+        const product = await ProductsDAO.getById(productId);
+
+        res.render('productDetail', { product });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
-  });
+});
 
 
- viewsRouter.get('/carts/:cid', async (req, res) => {
-   try {
-     const cartId = req.params.cid;
-     const cart = await CartsDAO.getById(cartId);
- 
-     res.render('cart', { cart });
-   } catch (error) {
-     res.status(500).json({ error: error.message });
-   }
- });
+viewsRouter.get('/carts/:cid', async (req, res) => {
+    try {
+        const cartId = req.params.cid;
+        const cart = await CartsDAO.getById(cartId);
 
+        res.render('cart', { cart });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+viewsRouter.get('/sessions/register', async (req, res) => {
+    try {
+        res.render('register')
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+})
+
+viewsRouter.get('/sessions/login', async (req, res) => {
+    try {
+        if (req.session.user) {
+            res.redirect("/products");
+        } else {
+            res.render('login');
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+})
 export default viewsRouter;

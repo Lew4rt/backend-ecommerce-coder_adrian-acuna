@@ -1,0 +1,30 @@
+<h1>Registration Page</h1>
+
+{{#if errors}}
+  <div style="color: red;">
+    <p>Errors:</p>
+    <ul>
+      {{#each errors}}
+        <li>{{this}}</li>
+      {{/each}}
+    </ul>
+  </div>
+{{/if}}
+{{#if emailUsed}}
+  <div style="color: red;">
+    <p>{{emailUsed}}</p>
+  </div>
+{{/if}}
+<form method="POST" action="/sessions/register">
+  <label for="first_name">Nombre:</label>
+  <input type="text" name="first_name" required />
+  <label for="last_name">Apellido:</label>
+  <input type="text" name="last_name" required />
+  <label for="age">Edad:</label>
+  <input type="number" name="age" required />
+  <label for="email">Correo electrónico:</label>
+  <input type="text" name="email" required />
+  <label for="password">Contraseña:</label>
+  <input type="text" name="password" required />
+  <button type="submit">Register</button>
+</form>

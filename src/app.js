@@ -3,13 +3,22 @@ import handlebars from 'express-handlebars';
 import path from './utils.js';
 import viewsRouter from './routes/views.router.js';
 import { Server } from 'socket.io';
-import routerProducts from '../api/products.js';
-import routerCarts from '../api/carts.js';
+import routerProducts from './api/products.js';
+import routerCarts from './api/carts.js';
 // import ProductManager from './dao/ProductManager.js';
 import mongoose from 'mongoose';
 import ProductsDAO from './dao/products.dao.js';
 import MessagesDao from './dao/messages.dao.js';
+import dotenv from 'dotenv';
+import session from "express-session";
+import cookieParser from "cookie-parser";
+import MongoStore from "connect-mongo";
+import routerSessions from './api/sessions.js';
 
+// Uso una librería para importar datos de un archivo .env y así evitar problemas de seguridad al ser público el repositorio
+// Las variables de entorno las adjunto con la entrega
+dotenv.config();
+const connectionString = process.env.MONGODB_CONNECTION_STRING;
 const PORT = 8080;
 
 const app = express();
@@ -24,7 +33,7 @@ const httpServer = app.listen(PORT, () =>
 const io = new Server(httpServer);
 
 // Conexión a MongoDB usando mongoose
-mongoose.connect("mongodb+srv://lew4rt:daeq312ws@lyj-db.2wrf87p.mongodb.net/")
+mongoose.connect(connectionString)
 
 // Instancio ProductManager (Esta clase utiliza filesystem, no utiliza mongo, así que no tiene caso mantenerlo, 
 // lo dejo comentado porque la entrega pide que no lo borremos)
@@ -33,6 +42,18 @@ mongoose.connect("mongodb+srv://lew4rt:daeq312ws@lyj-db.2wrf87p.mongodb.net/")
 // productManager.loadProducts();
 
 app.use(express.urlencoded({ extended: true }))
+
+// Configuración de cookie y session (La sesión dura una hora)
+app.use(cookieParser());
+app.use(session({
+   store: MongoStore.create({
+       mongoUrl: connectionString,
+       ttl: 3600,
+   }),
+   secret: 'secretCode',
+   resave: true,
+   saveUninitialized: true
+}));
 
 // Configuración de Handlebars
 app.engine("handlebars", handlebars.engine());
@@ -92,3 +113,4 @@ app.use('/', viewsRouter)
 // Para solucionar esto, cambio la ruta de acceso de products a productsApi, pero me gustaría tener una devolución al respecto de como debería hacerlo.
 app.use("/productsApi", routerProducts)
 app.use("/cart", routerCarts)
+app.use("/sessions", routerSessions)

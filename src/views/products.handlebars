@@ -1,5 +1,11 @@
 <div>
-  <h1>Lista de productos paginados</h1>
+  {{#if user}}
+    <h2>Bienvenido/a {{user.first_name}} {{user.last_name}}</h2>
+    {{#if user.is_admin}}
+    <h3>Usted es ADMIN</h3>
+    {{/if}}
+  {{/if}}
+  <h2>Lista de productos paginados</h2>
   <ul>
     {{#each data.payload}}
        <li>
@@ -29,9 +35,14 @@
   <div>
     <a id="cartLink" href="#">Go to Cart</a>
   </div>
+  &nbsp;
+  <div>
+    <a href="/sessions/logout">Cerrar sesión</a>
+  </div>
 </div>
 
 {{!-- Al no implementar todavía un sistema de login, decidí guardar el cartId en un localStorage y utilizarlo directamente de ahí --}}
+{{!-- Desafío entregable Login => Con la implementación de login, decidí mantener el cart en localStorage, probablemente actualice esto en próximas entregas --}}
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const cartId = localStorage.getItem('cartId');
