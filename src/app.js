@@ -14,6 +14,8 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import routerSessions from './api/sessions.js';
+import initializePassport from './config/passport.config.js'
+import passport from 'passport';
 
 // Uso una librería para importar datos de un archivo .env y así evitar problemas de seguridad al ser público el repositorio
 // Las variables de entorno las adjunto con la entrega
@@ -35,25 +37,25 @@ const io = new Server(httpServer);
 // Conexión a MongoDB usando mongoose
 mongoose.connect(connectionString)
 
-// Instancio ProductManager (Esta clase utiliza filesystem, no utiliza mongo, así que no tiene caso mantenerlo, 
-// lo dejo comentado porque la entrega pide que no lo borremos)
-
+// Instancio ProductManager (Esta clase utiliza filesystem, no utiliza mongo, así que no tiene caso mantenerlo, lo dejo comentado porque la entrega pide que no lo borremos)
 // const productManager = ProductManager.getInstance();
 // productManager.loadProducts();
 
 app.use(express.urlencoded({ extended: true }))
 
-// Configuración de cookie y session (La sesión dura una hora)
+// Configuración de cookie, session y passport
+initializePassport();
 app.use(cookieParser());
 app.use(session({
    store: MongoStore.create({
-       mongoUrl: connectionString,
-       ttl: 3600,
+      mongoUrl: connectionString,
+      ttl: 3600,
    }),
    secret: 'secretCode',
    resave: true,
    saveUninitialized: true
 }));
+app.use(passport.initialize())
 
 // Configuración de Handlebars
 app.engine("handlebars", handlebars.engine());

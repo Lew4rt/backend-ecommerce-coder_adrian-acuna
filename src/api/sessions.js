@@ -2,6 +2,7 @@ import Router from "express";
 import UsersDAO from "../dao/users.dao.js";
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
+import passport from "passport";
 
 const routerSessions = Router()
 
@@ -80,5 +81,16 @@ routerSessions.get("/logout", (req, res) => {
         res.redirect("/sessions/login");
     })
 })
+
+routerSessions.get('/github',
+    passport.authenticate('github', { scope: ['user:email'] }),
+    function (req, res) { });
+
+routerSessions.get('/githubcallback',
+    passport.authenticate('github', { failureRedirect: '/login' }),
+    function (req, res) {
+        req.session.user = req.user
+        res.redirect('/');
+    });
 
 export default routerSessions;
