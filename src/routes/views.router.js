@@ -2,8 +2,33 @@ import express from 'express';
 import ProductsDAO from '../dao/products.dao.js';
 import CartsDAO from '../dao/carts.dao.js';
 import UsersDAO from '../dao/users.dao.js';
+import jwt from 'jsonwebtoken';
 
 const viewsRouter = express.Router();
+
+// Middleware para chequear autenticación utilizando jwt token
+const isAuthenticated = (req, res, next) => {
+    const token = req.signedCookies.jwt;
+
+    if (!token) {
+        return res.redirect("/sessions/login");
+    }
+
+    jwt.verify(token, 'secret_jwt', async (err, decoded) => {
+        if (err) {
+            return res.redirect("/sessions/login");
+        }
+
+        const user = await UsersDAO.getByID(decoded.id);
+
+        if (!user) {
+            return res.redirect("/sessions/login");
+        }
+
+        req.user = user;
+        next();
+    });
+};
 
 // --- Alerta para segunda preentrega ---
 // Con el nuevo formato en el que recibimos los productos, '/' queda deprecado, en su lugar se redirije al usuario a /products, que es el endpoint que pide la consigna
@@ -18,7 +43,7 @@ viewsRouter.get('/', async (req, res) => {
     }
 });
 
-viewsRouter.get('/realtimeproducts', async (req, res) => {
+viewsRouter.get('/realtimeproducts', isAuthenticated, async (req, res) => {
     try {
         const productsData = await ProductsDAO.getAll();
         res.render('realTimeProducts', { products: productsData });
@@ -27,7 +52,7 @@ viewsRouter.get('/realtimeproducts', async (req, res) => {
     }
 });
 
-viewsRouter.get('/chat', async (req, res) => {
+viewsRouter.get('/chat', isAuthenticated, async (req, res) => {
     try {
         res.render('chat', {})
     } catch (error) {
@@ -60,32 +85,32 @@ const parseQueryMiddleware = (req, res, next) => {
     next();
 };
 
-viewsRouter.get('/products', parseQueryMiddleware, async (req, res) => {
+
+
+viewsRouter.get('/products', isAuthenticated, parseQueryMiddleware, async (req, res) => {
     try {
-        if (req.session.user) {
-            const user = await UsersDAO.getByID(req.session.user);
-            const { limit, page, sort } = req.query;
-            const query = req.parsedQuery;
-            const productsData = await ProductsDAO.getAll({
-                limit,
-                page,
-                sort,
-                query: query,
-            });
-
-            res.render('products', { data: productsData, user: user })
-
-        } else {
-            res.redirect("/sessions/login");
+        const user = req.user;
+        let isAdmin = false;
+        if (user.role === "admin") {
+            isAdmin = true
         }
+        const { limit, page, sort } = req.query;
+        const query = req.parsedQuery;
+        const productsData = await ProductsDAO.getAll({
+            limit,
+            page,
+            sort,
+            query: query,
+        });
 
+        res.render('products', { data: productsData, user: user, isAdmin: isAdmin })
 
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 })
 
-viewsRouter.get('/products/:productId', async (req, res) => {
+viewsRouter.get('/products/:productId', isAuthenticated, async (req, res) => {
     try {
         const productId = req.params.productId;
         const product = await ProductsDAO.getById(productId);
@@ -97,7 +122,7 @@ viewsRouter.get('/products/:productId', async (req, res) => {
 });
 
 
-viewsRouter.get('/carts/:cid', async (req, res) => {
+viewsRouter.get('/carts/:cid', isAuthenticated, async (req, res) => {
     try {
         const cartId = req.params.cid;
         const cart = await CartsDAO.getById(cartId);
@@ -117,14 +142,12 @@ viewsRouter.get('/sessions/register', async (req, res) => {
 })
 
 viewsRouter.get('/sessions/login', async (req, res) => {
-    try {
-        if (req.session.user) {
-            res.redirect("/products");
-        } else {
-            res.render('login');
-        }
-    } catch (error) {
-        res.status(500).json({ error: error.message })
+    const token = req.signedCookies.jwt;
+
+    if (token) {
+        return res.redirect("/products");
+    } else {
+        res.render('login');
     }
 })
 export default viewsRouter;

@@ -18,9 +18,9 @@ class UsersDAO {
         }
     }
 
-    static async add(first_name, last_name, age, email, password, is_admin=false) {
+    static async add(first_name, last_name, age, email, password) {
         try {
-            return await new users({ first_name, last_name, age, email, password, is_admin}).save();
+            return await new users({ first_name, last_name, age, email, password}).save();
         } catch (error) {
             throw new Error("Error añadiendo un usuario: " + error.message);
         }
@@ -30,7 +30,7 @@ class UsersDAO {
         try {
             return await users.findOne(
                 { _id: id },
-                { first_name: 1, last_name: 1, age: 1, email: 1, is_admin: 1 }
+                { first_name: 1, last_name: 1, age: 1, email: 1, role: 1 }
             ).lean();
         } catch (error) {
             throw new Error("Error in getUserByID: " + error.message);

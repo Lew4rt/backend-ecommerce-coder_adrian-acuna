@@ -22,11 +22,10 @@ const UsersSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    // El tipo de usuario decidí que lo voy a determinar con un boolean seteado desde la base de datos,
-    // tal y como dijo el profesor en clase que hagamos, pero contrario a lo que pide la consigna.
-    is_admin: {
-        type: Boolean,
-        required: true
+    role: {
+        type: String,
+        required: true,
+        default: "user"
     }
 });
 

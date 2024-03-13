@@ -1,7 +1,7 @@
 <div>
   {{#if user}}
     <h2>Bienvenido/a {{user.first_name}} {{user.last_name}}</h2>
-    {{#if user.is_admin}}
+    {{#if isAdmin}}
     <h3>Usted es ADMIN</h3>
     {{/if}}
   {{/if}}

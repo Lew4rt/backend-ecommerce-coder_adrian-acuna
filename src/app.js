@@ -10,9 +10,9 @@ import mongoose from 'mongoose';
 import ProductsDAO from './dao/products.dao.js';
 import MessagesDao from './dao/messages.dao.js';
 import dotenv from 'dotenv';
-import session from "express-session";
+// import session from "express-session";
 import cookieParser from "cookie-parser";
-import MongoStore from "connect-mongo";
+// import MongoStore from "connect-mongo";
 import routerSessions from './api/sessions.js';
 import initializePassport from './config/passport.config.js'
 import passport from 'passport';
@@ -43,18 +43,20 @@ mongoose.connect(connectionString)
 
 app.use(express.urlencoded({ extended: true }))
 
-// Configuración de cookie, session y passport
+// Configuración de cookie y passport
 initializePassport();
-app.use(cookieParser());
-app.use(session({
-   store: MongoStore.create({
-      mongoUrl: connectionString,
-      ttl: 3600,
-   }),
-   secret: 'secretCode',
-   resave: true,
-   saveUninitialized: true
-}));
+app.use(cookieParser("secret_cookie"));
+// En la segunda entrega integradora se reemplaza el uso de session por passport + cookie jwt
+
+// app.use(session({
+//    store: MongoStore.create({
+//       mongoUrl: connectionString,
+//       ttl: 3600,
+//    }),
+//    secret: 'secretCode',
+//    resave: true,
+//    saveUninitialized: true
+// }));
 app.use(passport.initialize())
 
 // Configuración de Handlebars
