@@ -5,19 +5,16 @@ import viewsRouter from './routes/views.router.js';
 import { Server } from 'socket.io';
 import routerProducts from './api/products.js';
 import routerCarts from './api/carts.js';
-// import ProductManager from './dao/ProductManager.js';
 import mongoose from 'mongoose';
 import ProductsDAO from './dao/products.dao.js';
 import MessagesDao from './dao/messages.dao.js';
 import dotenv from 'dotenv';
-// import session from "express-session";
 import cookieParser from "cookie-parser";
 // import MongoStore from "connect-mongo";
 import routerSessions from './api/sessions.js';
 import initializePassport from './config/passport.config.js'
 import passport from 'passport';
 
-// Uso una librería para importar datos de un archivo .env y así evitar problemas de seguridad al ser público el repositorio
 // Las variables de entorno las adjunto con la entrega
 dotenv.config();
 const connectionString = process.env.MONGODB_CONNECTION_STRING;
@@ -37,26 +34,11 @@ const io = new Server(httpServer);
 // Conexión a MongoDB usando mongoose
 mongoose.connect(connectionString)
 
-// Instancio ProductManager (Esta clase utiliza filesystem, no utiliza mongo, así que no tiene caso mantenerlo, lo dejo comentado porque la entrega pide que no lo borremos)
-// const productManager = ProductManager.getInstance();
-// productManager.loadProducts();
-
 app.use(express.urlencoded({ extended: true }))
 
 // Configuración de cookie y passport
 initializePassport();
 app.use(cookieParser("secret_cookie"));
-// En la segunda entrega integradora se reemplaza el uso de session por passport + cookie jwt
-
-// app.use(session({
-//    store: MongoStore.create({
-//       mongoUrl: connectionString,
-//       ttl: 3600,
-//    }),
-//    secret: 'secretCode',
-//    resave: true,
-//    saveUninitialized: true
-// }));
 app.use(passport.initialize())
 
 // Configuración de Handlebars
