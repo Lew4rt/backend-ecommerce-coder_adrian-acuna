@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-// ¿Es necesario que el formato de user sea el mismo que el del ejercicio en clase? No le veo utilidad a datos como "last_name", "age", no al proyecto que tengo pensado a futuro al menos.
 const UsersSchema = new mongoose.Schema({
     first_name: {
         type: String,

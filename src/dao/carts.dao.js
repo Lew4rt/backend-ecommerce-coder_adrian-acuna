@@ -27,7 +27,7 @@ class CartsDAO {
     
             return cart;
         } catch (err) {
-            throw new Error('Failed to get product by ID');
+            throw new Error('Failed to get cart by ID');
         }
     }
 

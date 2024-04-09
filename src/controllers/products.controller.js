@@ -35,8 +35,12 @@ export async function addProduct(req, res) {
       await ProductsDAO.add(productData)
       res.status(201).json({ message: 'Producto añadido exitosamente' });
    } catch (error) {
-      res.status(400).json({ error: error.message })
-   }
+      if (error.message === 'El código de producto debe ser único') {
+         res.status(400).json({ error: 'El código de producto debe ser único' });
+     } else {
+         res.status(500).json({ error: 'Error al añadir producto' });
+     }
+  }
 }
 
 export async function updateProduct(req, res) {

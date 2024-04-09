@@ -42,7 +42,11 @@ class ProductsDAO {
             const newProduct = new products(product);
             await newProduct.save();
         } catch (err) {
-            throw new Error('Failed to add product');
+            if (err.code === 11000) { // MongoDB duplicate key error code
+                throw new Error('El código de producto debe ser único');
+            } else {
+                throw new Error('Failed to add product');
+            }
         }
     }
 
