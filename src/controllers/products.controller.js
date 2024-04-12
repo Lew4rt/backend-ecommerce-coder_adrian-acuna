@@ -1,4 +1,5 @@
 import ProductsDAO from '../dao/products.dao.js';
+import { generateFakeProduct } from '../utils/utils.js';
 
 export async function getAllProducts(req, res) {
    try {
@@ -37,10 +38,10 @@ export async function addProduct(req, res) {
    } catch (error) {
       if (error.message === 'El código de producto debe ser único') {
          res.status(400).json({ error: 'El código de producto debe ser único' });
-     } else {
+      } else {
          res.status(500).json({ error: 'Error al añadir producto' });
-     }
-  }
+      }
+   }
 }
 
 export async function updateProduct(req, res) {
@@ -76,21 +77,29 @@ export async function deleteProduct(req, res) {
    }
 }
 
+export async function getGeneratedProducts(req, res) {
+   const products = [];
+   for (let i = 0; i < 100; i++) {
+      products.push(generateFakeProduct())
+   }
+   res.json(products)
+}
+
 export function parseQueryMiddleware(req, res, next) {
    const { query } = req.query;
 
    if (query) {
-       try {
-           const parsedQuery = query.split('&').reduce((acc, pair) => {
-               const [key, value] = pair.split('=');
-               acc[key] = value;
-               return acc;
-           }, {});
+      try {
+         const parsedQuery = query.split('&').reduce((acc, pair) => {
+            const [key, value] = pair.split('=');
+            acc[key] = value;
+            return acc;
+         }, {});
 
-           req.parsedQuery = parsedQuery;
-       } catch (error) {
-           return res.status(400).json({ error: 'Invalid query parameter format' });
-       }
+         req.parsedQuery = parsedQuery;
+      } catch (error) {
+         return res.status(400).json({ error: 'Invalid query parameter format' });
+      }
    }
 
    next();
