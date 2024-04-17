@@ -2,6 +2,7 @@ import { validationResult, body } from 'express-validator';
 import bcrypt from 'bcrypt';
 import UsersDAO from '../dao/users.dao.js';
 import jwt from "jsonwebtoken";
+import logger from '../logs/logger.js';
 
 const validateUserInput = [
     body('first_name').notEmpty(),
@@ -31,7 +32,7 @@ export async function register(req, res) {
         await UsersDAO.add(first_name, last_name, age, email, hashedPassword);
         return res.redirect("/sessions/login");
     } catch (error) {
-        console.error("Error in user registration:", error.message);
+        logger.error("Error in user registration:", error.message);
         return res.status(500).redirect("/sessions/register");
     }
 }
@@ -74,7 +75,7 @@ export async function login(req, res) {
             return res.status(400).json({ error: 'Password inválido' });
         }
     } catch (error) {
-        console.error("Error in user login:", error.message);
+        logger.error("Error in user login:", error.message);
         return res.status(500).redirect("/sessions/login");
     }
 }

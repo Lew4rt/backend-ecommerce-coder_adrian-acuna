@@ -1,3 +1,5 @@
+import logger from "../../logs/logger";
+
 const socket = io();
 
 // Manejar el formulario para agregar productos
@@ -38,7 +40,7 @@ socket.on('updateProducts', (products) => {
     productList.innerHTML = '';
 
     products.forEach((product) => {
-        console.log(product)
+        logger.info(product)
         const listItem = document.createElement('li');
         listItem.innerHTML = `${product.title} - ${product.price} <button class="deleteProductButton" data-productid="${product._id}">Delete product</button>`;
         productList.appendChild(listItem);

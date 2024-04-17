@@ -1,3 +1,4 @@
+import logger from "../logs/logger.js";
 import messages from "./models/messages.schema.js";
 
 class MessagesDao {
@@ -9,13 +10,13 @@ class MessagesDao {
             });
             await newMessage.save()
                 .then(savedMessage => {
-                    console.log('Message saved:', savedMessage);
+                    logger.info('Message saved:', savedMessage);
                 })
                 .catch(error => {
-                    console.error('Error saving message:', error);
+                    logger.error('Error saving message:', error);
                 });
         } catch (err) {
-            console.error('Error saving message:', error);
+            logger.error('Error saving message:', error);
         }
     }
 }

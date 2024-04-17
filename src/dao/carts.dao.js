@@ -1,3 +1,4 @@
+import logger from "../logs/logger.js";
 import carts from "./models/carts.schema.js";
 
 class CartsDAO {
@@ -47,7 +48,7 @@ class CartsDAO {
             await cart.save();
         }
         catch (error) {
-            console.error('Error adding product to cart:', error);
+            logger.error('Error adding product to cart:', error);
             throw error;
         }
     }
@@ -67,7 +68,7 @@ class CartsDAO {
                 throw new Error("Product not found in cart");
             }
         } catch (error) {
-            console.error('Error deleting product from cart:', error);
+            logger.error('Error deleting product from cart:', error);
             throw error;
         }
 
@@ -82,7 +83,7 @@ class CartsDAO {
             cart.products = products;
             await cart.save();
         } catch (error) {
-            console.error('Error updating cart products:', error);
+            logger.error('Error updating cart products:', error);
             throw error;
         }
     }
@@ -102,7 +103,7 @@ class CartsDAO {
                 throw new Error("Product not found in cart");
             }
         } catch (error) {
-            console.error('Error updating product quantity in cart:', error);
+            logger.error('Error updating product quantity in cart:', error);
             throw error;
         }
     }
@@ -116,7 +117,7 @@ class CartsDAO {
             cart.products = [];
             await cart.save();
         } catch (error) {
-            console.error('Error deleting all products from cart:', error);
+            logger.error('Error deleting all products from cart:', error);
             throw error;
         }
     }

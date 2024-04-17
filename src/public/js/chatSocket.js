@@ -1,3 +1,5 @@
+import logger from "../../logs/logger";
+
 const socket = io();
 
 let user;
@@ -12,7 +14,7 @@ Swal.fire({
     allowOutsideClick: false
 }).then(result => {
     user = result.value
-    console.log(user)
+    logger.info(user)
     socket.emit('login', user)
 })
 
@@ -35,7 +37,7 @@ socket.on('messageLogs', data => {
 })
 
 socket.on('register', data => {
-    console.log(data)
+    logger.info(data)
     Swal.fire({
         title: 'Se registro un nuevo usuario',
         text: `El nombre del usuario es ${data}`,

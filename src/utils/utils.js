@@ -1,10 +1,6 @@
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+
 import { faker } from '@faker-js/faker';
 import { v4 as uuidv4 } from 'uuid';
-
-
-const __filename = fileURLToPath(import.meta.url);
 
 export function permissions_middleware(required_role) {
     return function(req, res, next) {
@@ -26,5 +22,3 @@ export function generateFakeProduct() {
         stock: faker.number.int({ min: 0, max: 120 }),
     }
 }
-
-export default dirname(__filename);
