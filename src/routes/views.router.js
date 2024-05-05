@@ -150,4 +150,15 @@ viewsRouter.get('/sessions/login', async (req, res) => {
         res.render('login');
     }
 })
+
+viewsRouter.get('/sessions/requestResetPw', async (req, res) => {
+    return res.render('requestResetPw')
+})
+
+viewsRouter.get('/sessions/resetPw/:token/:iv', async (req, res) => {
+    const token = req.params.token;
+    const iv = req.params.iv;
+    return res.render('resetPw', { token, iv })
+})
+
 export default viewsRouter;

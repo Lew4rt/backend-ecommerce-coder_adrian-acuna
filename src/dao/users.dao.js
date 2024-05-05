@@ -4,7 +4,7 @@ class UsersDAO {
 
     static async getByEmail(email) {
         try {
-            return await users.findOne({ email });
+            return await users.findOne({ email }); 
         } catch (error) {
             throw new Error("Error obteniendo el usuario con su email: " + error.message);
         }
@@ -34,6 +34,15 @@ class UsersDAO {
             ).lean();
         } catch (error) {
             throw new Error("Error in getUserByID: " + error.message);
+        }
+    }
+
+    static async update(id, updatedFields) {
+        try {
+            const result = await users.findByIdAndUpdate(id, updatedFields, { new: true });
+            return result !== null;
+        } catch (err) {
+            throw new Error('Failed to update user');
         }
     }
 }

@@ -1,8 +1,10 @@
 import ProductsDAO from '../dao/products.dao.js';
+import logger from '../logs/logger.js';
 import { generateFakeProduct } from '../utils/utils.js';
 
 export async function getAllProducts(req, res) {
    try {
+      logger.info("Buscando todos los productos...")
       const { limit, page, sort } = req.query;
       const query = req.parsedQuery;
 
@@ -13,7 +15,10 @@ export async function getAllProducts(req, res) {
          query: query,
       });
 
-      res.json(products);
+      if(products){
+         logger.info("Productos encontrados.")
+         res.json(products);
+      }
    } catch (error) {
       res.status(500).json({ error: error.message });
    }
@@ -21,10 +26,14 @@ export async function getAllProducts(req, res) {
 
 export async function getProductById(req, res) {
    try {
+      logger.info("Buscando producto por ID...")
       const productId = req.params.pid;
       const product = await ProductsDAO.getById(productId);
 
-      res.json(product);
+      if(product){
+         logger.info("Producto encontrado por ID.")
+         res.json(product);
+      }
    } catch (error) {
       res.status(404).json({ error: error.message });
    }
@@ -32,8 +41,10 @@ export async function getProductById(req, res) {
 
 export async function addProduct(req, res) {
    try {
+      logger.info("Añadiendo producto...")
       const productData = req.body
       await ProductsDAO.add(productData)
+      logger.info("Producto añadido exitosamente")
       res.status(201).json({ message: 'Producto añadido exitosamente' });
    } catch (error) {
       if (error.message === 'El código de producto debe ser único') {
@@ -46,12 +57,16 @@ export async function addProduct(req, res) {
 
 export async function updateProduct(req, res) {
    try {
+      logger.info("Actualizando producto...")
       const productId = req.params.pid;
       const updatedFields = req.body;
+
+      console.log(updatedFields)
 
       const success = await ProductsDAO.update(productId, updatedFields);
 
       if (success) {
+         logger.info('Producto actualizado exitosamente')
          res.json({ message: 'Producto actualizado exitosamente' });
       } else {
          res.status(404).json({ error: 'Producto no encontrado' });
@@ -63,11 +78,12 @@ export async function updateProduct(req, res) {
 
 export async function deleteProduct(req, res) {
    try {
+      logger.info("Eliminando producto...")
       const productId = req.params.pid;
-
       const success = await ProductsDAO.delete(productId);
 
       if (success) {
+         logger.info('Producto eliminado exitosamente')
          res.json({ message: 'Producto eliminado exitosamente' });
       } else {
          res.status(404).json({ error: 'Producto no encontrado' });

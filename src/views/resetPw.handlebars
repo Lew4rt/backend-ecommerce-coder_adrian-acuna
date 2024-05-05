@@ -1,0 +1,28 @@
+<h1>Solicitar reinicio de contraseña</h1>
+
+{{#if errors}}
+  <div style="color: red;">
+    <p>Errors:</p>
+    <ul>
+      {{#each errors}}
+        <li>{{this}}</li>
+      {{/each}}
+    </ul>
+  </div>
+{{/if}}
+<form method="POST" id="resetPwForm">
+  <label for="password">Nueva contraseña (6 o más caracteres):</label>
+  <input type="text" name="password" required />
+  <button type="submit">Confirmar</button>
+</form>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const token = '{{token}}';
+    const iv = '{{iv}}';
+    const encodedToken = encodeURIComponent(token);
+    const encodedIV = encodeURIComponent(iv);
+    const form = document.getElementById('resetPwForm');
+    form.action = `/sessions/resetPw/${encodedToken}/${encodedIV}`;
+  });
+</script>

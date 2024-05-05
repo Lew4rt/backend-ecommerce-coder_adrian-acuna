@@ -98,6 +98,7 @@ io.on('connection', (socket) => {
 
 });
 
+// Endpoint tester de logger
 app.get('/loggerTest', (req, res) => {
    logger.debug('Debug message');
    logger.http('HTTP message');
@@ -111,8 +112,6 @@ app.get('/loggerTest', (req, res) => {
  
 // Conexión a los respectivos routers
 app.use('/', viewsRouter)
-// En la segunda preentrega nos piden que en el router de views exista un /products, lo cual pisa al actual routerProducts.
-// Para solucionar esto, cambio la ruta de acceso de products a productsApi, pero me gustaría tener una devolución al respecto de como debería hacerlo.
 app.use("/productsApi", routerProducts)
 app.use("/cart", routerCarts)
 app.use("/sessions", routerSessions)

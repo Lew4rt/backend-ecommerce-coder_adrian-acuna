@@ -17,6 +17,7 @@
   </div>
 {{/if}}
 
+<div style="display: flex">
 <form method="POST" action="/sessions/login">
   <label for="email">Correo electrónico:</label>
   <input type="text" name="email" required />
@@ -24,6 +25,8 @@
   <input type="text" name="password" required />
   <button type="submit">Iniciar sesión</button>
 </form>
+<a href="/sessions/requestResetPw">Olvidé mi contraseña</a>
+</div>
 <div>
   <a href="/sessions/github"><button>Iniciar sesión con Github</button></a>
 </div>

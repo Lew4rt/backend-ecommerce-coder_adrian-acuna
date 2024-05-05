@@ -1,0 +1,17 @@
+<h1>Solicitar reinicio de contraseña</h1>
+
+{{#if errors}}
+  <div style="color: red;">
+    <p>Errors:</p>
+    <ul>
+      {{#each errors}}
+        <li>{{this}}</li>
+      {{/each}}
+    </ul>
+  </div>
+{{/if}}
+<form method="POST" action="/sessions/requestResetPw">
+  <label for="email">Correo electrónico:</label>
+  <input type="text" name="email" required />
+  <button type="submit">Enviar</button>
+</form>
