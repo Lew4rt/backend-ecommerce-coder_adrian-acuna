@@ -10,11 +10,11 @@ cartRouter.use(passport.authenticate("jwt", { session: false }));
 
 cartRouter.post('/', CartController.createCart);
 cartRouter.get('/:cid', CartController.getCart);
-cartRouter.post('/:pid', permissions_middleware("user"), CartController.addProductToCart);
-cartRouter.post('/:cid/product/:pid', permissions_middleware("user"), CartController.addProductWithQuantityToCart);
-cartRouter.delete('/:cid/product/:pid', permissions_middleware("user"), CartController.deleteProductFromCart);
-cartRouter.put('/:cid', permissions_middleware("user"), CartController.updateCartProducts);
-cartRouter.put('/:cid/product/:pid', permissions_middleware("user"), CartController.updateProductQuantityInCart);
+cartRouter.post('/:pid', permissions_middleware("user", "premium"), CartController.addProductToCart);
+cartRouter.post('/:cid/product/:pid', permissions_middleware("user", "premium"), CartController.addProductWithQuantityToCart);
+cartRouter.delete('/:cid/product/:pid', permissions_middleware("user", "premium"), CartController.deleteProductFromCart);
+cartRouter.put('/:cid', permissions_middleware("user", "premium"), CartController.updateCartProducts);
+cartRouter.put('/:cid/product/:pid', permissions_middleware("user", "premium"), CartController.updateProductQuantityInCart);
 cartRouter.delete('/:cid', CartController.deleteAllProductsFromCart);
 cartRouter.post('/:cid/purchase', CartController.purchaseCart)
 

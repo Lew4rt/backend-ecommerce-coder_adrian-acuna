@@ -38,6 +38,15 @@ export async function addProductToCart(req, res) {
         }
 
         const productId = req.params.pid;
+        if(req.user && req.user.role === "premium"){
+            const productToBeAdded = await ProductsDAO.getById(productId)
+            
+            if(productToBeAdded.owner === req.user._id.toString()){
+                logger.error("El usuario no puede agregar su propio producto al carrito")
+                return res.status(400).json({ error: 'No puedes añadir tu propio producto al carrito'})
+            }
+        }
+
         const quantity = 1;
 
         await CartsDAO.addProduct(cartId, productId, quantity);

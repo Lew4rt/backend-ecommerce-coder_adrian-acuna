@@ -27,6 +27,7 @@ export async function getAllProducts(req, res) {
 export async function getProductById(req, res) {
    try {
       logger.info("Buscando producto por ID...")
+      
       const productId = req.params.pid;
       const product = await ProductsDAO.getById(productId);
 
@@ -43,6 +44,11 @@ export async function addProduct(req, res) {
    try {
       logger.info("Añadiendo producto...")
       const productData = req.body
+      
+      if(req.user.role === "premium"){
+         productData.owner = req.user._id
+      }
+
       await ProductsDAO.add(productData)
       logger.info("Producto añadido exitosamente")
       res.status(201).json({ message: 'Producto añadido exitosamente' });
@@ -58,10 +64,18 @@ export async function addProduct(req, res) {
 export async function updateProduct(req, res) {
    try {
       logger.info("Actualizando producto...")
-      const productId = req.params.pid;
-      const updatedFields = req.body;
 
-      console.log(updatedFields)
+      const productId = req.params.pid;
+
+      if(req.user.role === "premium"){
+         const productToBeUpdated = await ProductsDAO.getById(productId)
+         if(!productToBeUpdated.owner && productToBeUpdated.owner !== req.user._id){
+            logger.error("Usuario no autorizado")
+            return res.status(403).json({ error: 'Unauthorized' });
+         }
+      }
+
+      const updatedFields = req.body;
 
       const success = await ProductsDAO.update(productId, updatedFields);
 
@@ -79,7 +93,17 @@ export async function updateProduct(req, res) {
 export async function deleteProduct(req, res) {
    try {
       logger.info("Eliminando producto...")
+
       const productId = req.params.pid;
+
+      if(req.user.role === "premium"){
+         const productToBeDeleted = await ProductsDAO.getById(productId)
+         if(productToBeDeleted.owner !== req.user._id){
+            logger.error("Usuario no autorizado")
+            return res.status(403).json({ error: 'Unauthorized' });
+         }
+      }
+
       const success = await ProductsDAO.delete(productId);
 
       if (success) {

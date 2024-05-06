@@ -181,4 +181,29 @@ export async function resetPw(req, res){
    
 }
 
+export async function toggleUserRole(req, res) {
+    logger.info("Cambiando el rol del usuario")
+    const user = await UsersDAO.getByID(req.params.uid)
+    if(!user){
+        logger.error("No se encontró usuario para cambiar de rol")
+        return res.status(401).json({error: "No se encontró usuario para cambiar de rol"})
+    } 
+    if(user.role === "user"){
+        const success = await UsersDAO.update(user._id, {role: "premium"})
+        if(success){
+            logger.info("Rol actualizado con éxito")+
+            res.status(200).json({message: "Rol actualizado con éxito"})
+        }
+    }else if(user.role === "premium"){
+        const success = await UsersDAO.update(user._id, {role: "user"})
+        if(success){
+            logger.info("Rol actualizado con éxito")+
+            res.status(200).json({message: "Rol actualizado con éxito"})
+        }
+    }else{
+        res.status(400).json({error: "El usuario no aplica para cambio de rol"})
+    }
+
+}
+
 export { validateLoginInput };

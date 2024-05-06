@@ -3,14 +3,14 @@ import { faker } from '@faker-js/faker';
 import { v4 as uuidv4 } from 'uuid';
 import crypto from 'crypto'
 
-export function permissions_middleware(required_role) {
+export function permissions_middleware(required_role, optional_required_role = null) {
     return function(req, res, next) {
-        if(req.user && req.user.role === required_role){
+        if (req.user && (req.user.role === required_role || req.user.role === optional_required_role)) {
             next();
         } else {
             res.status(403).json({ error: 'Unauthorized' });
         }
-    }
+    };
 }
 
 export function generateFakeProduct() {

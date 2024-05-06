@@ -11,8 +11,8 @@ router.use(passport.authenticate("jwt", { session: false }));
 router.get('/mockingproducts', ProductController.getGeneratedProducts);
 router.get('/', ProductController.parseQueryMiddleware, ProductController.getAllProducts);
 router.get('/:pid', ProductController.getProductById);
-router.post('/', permissions_middleware("admin"), ProductController.addProduct);
-router.put('/:pid', permissions_middleware("admin"), ProductController.updateProduct);
-router.delete('/:pid', permissions_middleware("admin"), ProductController.deleteProduct);
+router.post('/', permissions_middleware("admin", "premium"), ProductController.addProduct);
+router.put('/:pid', permissions_middleware("admin", "premium"), ProductController.updateProduct);
+router.delete('/:pid', permissions_middleware("admin", "premium"), ProductController.deleteProduct);
 
 export default router;
