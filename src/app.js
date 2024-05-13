@@ -16,6 +16,8 @@ import routerSessions from './api/sessions.js';
 import initializePassport from './config/passport.config.js'
 import passport from 'passport';
 import logger from './logs/logger.js'
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-ui-express'
 
 // Las variables de entorno las adjunto con la entrega
 dotenv.config();
@@ -109,9 +111,33 @@ app.get('/loggerTest', (req, res) => {
  
    res.send('Logs generados, revisa la consola o el archivo errors.log si estás en producción');
  });
- 
+
+// Docs config
+const swaggerOptions = {
+   definition: {
+      openapi: '3.0.3',
+      info: {
+         title: "LyJ - Backend",
+         description: "|- This is an E-commerce Accessory Store Server made by Adrián Acuña for the CoderHouse Institute. <br> LyJ stands for Lewi & Junior <br> Repository: - [LyJ repository](https://github.com/Lew4rt/backend-ecommerce-coder_adrian-acuna)",
+         version: "1.0.0",
+         contact: {
+            email: "adryxs@hotmail.com.ar"
+         },
+         servers: [
+            {
+               url: "http://localhost"
+            }
+         ]
+      }
+   },
+   apis: ['./src/docs/**/*.yaml'],
+}
+
+const specs = swaggerJSDoc(swaggerOptions)
+
 // Conexión a los respectivos routers
 app.use('/', viewsRouter)
 app.use("/productsApi", routerProducts)
 app.use("/cart", routerCarts)
 app.use("/sessions", routerSessions)
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs))

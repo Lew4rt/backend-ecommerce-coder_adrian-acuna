@@ -14,9 +14,10 @@ routerSessions.get("/current", passport.authenticate("jwt", {session:false}), (r
     res.json(req.user);
 });
 
-routerSessions.get("/logout", (req, res) => {
+routerSessions.get("/logout", async (req, res) => {
     logger.info("User logging out")
-    res.clearCookie("jwt").redirect("/sessions/login");
+    res.clearCookie("jwt");
+    res.status(200).redirect("/sessions/login");
 });
 
 routerSessions.post("/requestResetPw", validateEmailInput, resetPwRequest)

@@ -1,0 +1,51 @@
+paths:
+  /sessions/premium/{uid}:
+    post:
+      tags:
+        - User
+      summary: Toggle User Role
+      description: Toggle the premium status of a user.
+      operationId: toggleUserRole
+      responses:
+        '200':
+          description: Successful operation. Returns the updated user role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+          example: 65f1e7ffba5407e04069b581
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: The first name of the user.
+        last_name:
+          type: string
+          description: The last name of the user.
+        age:
+          type: number
+          description: The age of the user.
+        email:
+          type: string
+          description: The email address of the user.
+        password:
+          type: string
+          description: The password of the user.
+        role:
+          type: string
+          description: The role of the user.
+      required:
+        - first_name
+        - age
+        - email
+        - password
+        - role

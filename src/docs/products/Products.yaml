@@ -1,0 +1,124 @@
+paths:
+  /productsApi:
+    get:
+      tags:
+        - Product
+      summary: Get Products
+      description: Retrieve a list of available products.
+      operationId: getProducts
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: string
+            example: '1'
+      responses:
+        '200':
+          description: Successful operation. Returns a list of products. 
+          content: 
+            application/json:
+              schema:
+                schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'   
+  /productsApi/{pid}:  
+    get:
+      tags:
+        - Product
+      summary: Get Product by ID
+      description: Retrieve a product by its unique identifier.
+      operationId: getProductById
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 65c79fde50f884938da9cd0f
+      responses:
+        '200':
+          description: Successful operation. Returns the requested product.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'          
+  /productsApi/{id}:
+    put:
+      tags:
+        - Product
+      summary: Update Product
+      description: Update an existing product.  <br> Requires "admin" or "premium" user role
+      operationId: updateProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: Updated title example
+            examples:
+              Update Product:
+                value:
+                  title: Updated title example
+      responses:
+        '200':
+          description: Successful operation. Returns the updated product.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    delete:
+      tags:
+        - Product
+      summary: Delete Product
+      description: Delete a product from the inventory.  <br> Requires "admin" or "premium" user role
+      operationId: deleteProduct
+      responses:
+        '200':
+          description: Successful operation. Returns a confirmation message.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '65c79fde50f884938da9cd0f'
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        title:
+          type: string
+          description: The title of the product.
+        description:
+          type: string
+          description: The description of the product.
+        price:
+          type: string
+          description: The price of the product.
+        thumbnails:
+          type: array
+          items:
+            type: string
+          description: URLs of product thumbnails.
+        code:
+          type: string
+          description: The unique code of the product.
+        stock:
+          type: number
+          description: The available stock of the product.
+        owner:
+          type: string
+          description: The owner of the product.
+      required:
+        - title
+        - description
+        - price
+        - thumbnails
+        - code
+        - stock
+        - owner
