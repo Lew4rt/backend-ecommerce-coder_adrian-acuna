@@ -22,6 +22,7 @@ import swaggerUiExpress from 'swagger-ui-express'
 // Las variables de entorno las adjunto con la entrega
 dotenv.config();
 const connectionString = process.env.MONGODB_CONNECTION_STRING;
+const dbName = process.env.DATABASE_NAME;
 const PORT = 8080;
 
 const app = express();
@@ -36,7 +37,7 @@ const httpServer = app.listen(PORT, () =>
 const io = new Server(httpServer);
 
 // Conexión a MongoDB usando mongoose
-mongoose.connect(connectionString)
+mongoose.connect(connectionString, {dbName: dbName})
 
 app.use(express.urlencoded({ extended: true }))
 
@@ -141,3 +142,5 @@ app.use("/productsApi", routerProducts)
 app.use("/cart", routerCarts)
 app.use("/sessions", routerSessions)
 app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+
+export default app;

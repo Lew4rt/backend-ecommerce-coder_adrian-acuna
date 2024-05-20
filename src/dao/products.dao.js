@@ -40,7 +40,10 @@ class ProductsDAO {
     static async add(product) {
         try {
             const newProduct = new products(product);
-            await newProduct.save();
+            const success = await newProduct.save();
+            if(success){
+                return true
+            }
         } catch (err) {
             if (err.code === 11000) { // MongoDB duplicate key error code
                 throw new Error('El código de producto debe ser único');

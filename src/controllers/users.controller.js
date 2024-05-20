@@ -39,6 +39,7 @@ export async function register(req, res) {
 
         const hashedPassword = await bcrypt.hash(password, 10);
         await UsersDAO.add(first_name, last_name, age, email, hashedPassword);
+        logger.info("Nuevo usuario registrado")
         return res.redirect("/sessions/login");
     } catch (error) {
         logger.error("Error in user registration:", error.message);
