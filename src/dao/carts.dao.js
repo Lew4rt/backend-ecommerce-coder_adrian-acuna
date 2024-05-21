@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import logger from "../logs/logger.js";
 import carts from "./models/carts.schema.js";
 
@@ -17,7 +18,6 @@ class CartsDAO {
         }
     }
 
-    // getById se ve modificado en la segunda entrega con el uso de populate.
     static async getById(id) {
         try {
             const cart = await carts.findById(id).populate('products.productId').lean().exec();
@@ -119,6 +119,15 @@ class CartsDAO {
         } catch (error) {
             logger.error('Error deleting all products from cart:', error);
             throw error;
+        }
+    }
+
+    static async delete(id) {
+        try {
+            const result = await carts.findByIdAndDelete(id);
+            return result !== null;
+        } catch (err) {
+            throw new Error('Failed to delete cart');
         }
     }
 }

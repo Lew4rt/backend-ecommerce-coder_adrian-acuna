@@ -37,10 +37,13 @@ class ProductsDAO {
         }
     }
 
-    static async add(product) {
+    static async add(product, returnProduct) {
         try {
             const newProduct = new products(product);
             const success = await newProduct.save();
+            if(success && returnProduct){
+                return newProduct
+            }
             if(success){
                 return true
             }

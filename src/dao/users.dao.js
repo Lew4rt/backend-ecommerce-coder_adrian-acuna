@@ -20,7 +20,12 @@ class UsersDAO {
 
     static async add(first_name, last_name, age, email, password) {
         try {
+            const emailUsed = await UsersDAO.getByEmail(email);
+            if (emailUsed) {
+                throw new Error("El email está en uso");
+            }
             return await new users({ first_name, last_name, age, email, password}).save();
+            
         } catch (error) {
             throw new Error("Error añadiendo un usuario: " + error.message);
         }
@@ -43,6 +48,24 @@ class UsersDAO {
             return result !== null;
         } catch (err) {
             throw new Error('Failed to update user');
+        }
+    }
+
+    static async delete(id) {
+        try {
+            const result = await users.findByIdAndDelete(id);
+            return result !== null;
+        } catch (err) {
+            throw new Error('Failed to delete user');
+        }
+    }
+
+    static async deleteAll(ids) {
+        try {
+            await users.deleteMany({ _id: { $in: ids } });
+            return true;
+        } catch (err) {
+            throw new Error('Failed to delete all users');
         }
     }
 }
