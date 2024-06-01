@@ -35,7 +35,7 @@ class UsersDAO {
         try {
             return await users.findOne(
                 { _id: id },
-                { first_name: 1, last_name: 1, age: 1, email: 1, role: 1 }
+                { first_name: 1, last_name: 1, age: 1, email: 1, role: 1, last_connection: 1, documents: 1 }
             ).lean();
         } catch (error) {
             throw new Error("Error in getUserByID: " + error.message);

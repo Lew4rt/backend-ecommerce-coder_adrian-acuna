@@ -1,4 +1,4 @@
-## Environment Variables
+## Environment Variables (Modify .env)
 ### Template
 NODE_ENV= \
 MONGODB_CONNECTION_STRING= \

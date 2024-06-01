@@ -1,0 +1,529 @@
+{
+	"info": {
+		"_postman_id": "c4b47f98-2207-4795-b56a-ff5155d2ecd9",
+		"name": "LyJ - Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "19350769"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/productsApi"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/productsApi/:pid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"productsApi",
+								":pid"
+							],
+							"variable": [
+								{
+									"key": "pid",
+									"value": "65c79fde50f884938da9cd0f"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get generated Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/productsApi/mockingproducts"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"producto prueba 18\",\r\n    \"description\": \"producto prueba description 18\",\r\n    \"price\": 18.99,\r\n    \"code\": \"iop418\",\r\n    \"stock\": 28\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/productsApi"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"title\": \"producto prueba 170 actualizado\" }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/productsApi/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"productsApi",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "66391eff7b6c12cfc6960415"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/productsApi/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"productsApi",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Carts",
+			"item": [
+				{
+					"name": "Get Cart",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/cart/:cid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cart",
+								":cid"
+							],
+							"variable": [
+								{
+									"key": "cid",
+									"value": "65d435e0fd78368185ed349d"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8080/cart"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Product with Quantity to Cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quantity\": \"2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cart/:cid/product/:pid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cart",
+								":cid",
+								"product",
+								":pid"
+							],
+							"variable": [
+								{
+									"key": "cid",
+									"value": "1"
+								},
+								{
+									"key": "pid",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Product to Cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/cart/:pid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cart",
+								":pid"
+							],
+							"variable": [
+								{
+									"key": "pid",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product from Cart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/cart/:cid/product/:pid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cart",
+								":cid",
+								"product",
+								":pid"
+							],
+							"variable": [
+								{
+									"key": "cid",
+									"value": "65c7b6844ad6073863b33bc0"
+								},
+								{
+									"key": "pid",
+									"value": "65ba56c381135340299b22f5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update products in Cart",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"products\":[\r\n        {\r\n            \"productId\": \"65ba56c381135340299b22f1\",\r\n            \"quantity\": 7,\r\n            \"_id\": \"65c7b7186be23f9a8cf24d18\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cart/:cid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cart",
+								":cid"
+							],
+							"variable": [
+								{
+									"key": "cid",
+									"value": "65c7b6844ad6073863b33bc0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update product quantity in Cart",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quantity\": \"2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cart/:cid/product/:pid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cart",
+								":cid",
+								"product",
+								":pid"
+							],
+							"variable": [
+								{
+									"key": "cid",
+									"value": "65c7b6844ad6073863b33bc0"
+								},
+								{
+									"key": "pid",
+									"value": "65ba56c381135340299b22f1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete all products in Cart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/cart/:cid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cart",
+								":cid"
+							],
+							"variable": [
+								{
+									"key": "cid",
+									"value": "65c7b6844ad6073863b33bc0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Purchase Cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/cart/:cid/purchase",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cart",
+								":cid",
+								"purchase"
+							],
+							"variable": [
+								{
+									"key": "cid",
+									"value": "6614442d1ea4bd10ec0242f4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sessions",
+			"item": [
+				{
+					"name": "Get current user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/sessions/current"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"adryxs@hotmail.com.ar\",\r\n    \"password\": \"daeq312ws\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/sessions/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"Brajilio\",\r\n    \"last_name\": \"Cipallos\",\r\n    \"email\": \"brajilio@cipallos.com\",\r\n    \"age\": \"21\",\r\n    \"password\": \"daeq312ws\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/sessions/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Toggle User Role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/sessions/premium/:uid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sessions",
+								"premium",
+								":uid"
+							],
+							"variable": [
+								{
+									"key": "uid",
+									"value": "65f1e7ffba5407e04069b581"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/sessions/logout"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload User Files",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profile",
+									"type": "file",
+									"src": "/E:/Documents/image - video format Example/Mole.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/sessions/:uid/documents",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sessions",
+								":uid",
+								"documents"
+							],
+							"variable": [
+								{
+									"key": "uid",
+									"value": "65f1e7ffba5407e04069b581"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

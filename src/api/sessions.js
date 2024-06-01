@@ -1,8 +1,8 @@
 import Router from "express";
 import passport from "passport";
 import jwt from "jsonwebtoken";
-import { register, validateUserInput, login, validateLoginInput, resetPwRequest, validateEmailInput, resetPw, validatePasswordInput, toggleUserRole } from '../controllers/users.controller.js';
-import logger from "../logs/logger.js";
+import { register, validateUserInput, login, logout, validateLoginInput, resetPwRequest, validateEmailInput, resetPw, validatePasswordInput, toggleUserRole, uploadFiles } from '../controllers/users.controller.js';
+import upload from '../config/multer.config.js';
 
 const routerSessions = Router()
 
@@ -14,11 +14,7 @@ routerSessions.get("/current", passport.authenticate("jwt", {session:false}), (r
     res.json(req.user);
 });
 
-routerSessions.get("/logout", async (req, res) => {
-    logger.info("User logging out")
-    res.clearCookie("jwt");
-    res.status(200).redirect("/sessions/login");
-});
+routerSessions.get("/logout", passport.authenticate("jwt", {session:false}), logout);
 
 routerSessions.post("/requestResetPw", validateEmailInput, resetPwRequest)
 
@@ -49,5 +45,7 @@ routerSessions.get('/githubcallback',
         }
     }
 );
+
+routerSessions.post('/:uid/documents', upload.fields([{ name: 'profile' }, { name: 'product' }, { name: 'documents' }]), uploadFiles);
 
 export default routerSessions;

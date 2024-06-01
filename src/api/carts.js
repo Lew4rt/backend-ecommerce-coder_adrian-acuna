@@ -15,7 +15,7 @@ cartRouter.post('/:cid/product/:pid', permissions_middleware("user", "premium"),
 cartRouter.delete('/:cid/product/:pid', permissions_middleware("user", "premium"), CartController.deleteProductFromCart);
 cartRouter.put('/:cid', permissions_middleware("user", "premium"), CartController.updateCartProducts);
 cartRouter.put('/:cid/product/:pid', permissions_middleware("user", "premium"), CartController.updateProductQuantityInCart);
-cartRouter.delete('/:cid', CartController.deleteAllProductsFromCart);
-cartRouter.post('/:cid/purchase', CartController.purchaseCart)
+cartRouter.delete('/:cid', permissions_middleware("user", "premium"), CartController.deleteAllProductsFromCart);
+cartRouter.post('/:cid/purchase', permissions_middleware("user", "premium"), CartController.purchaseCart)
 
 export default cartRouter;

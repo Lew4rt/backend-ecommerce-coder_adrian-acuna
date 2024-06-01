@@ -76,12 +76,12 @@ export async function login(req, res) {
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         if (passwordMatch) {
-            let token = jwt.sign({id: user._id}, 'secret_jwt', { expiresIn: '1h' });
+            let token = jwt.sign({ id: user._id }, 'secret_jwt', { expiresIn: '1h' });
 
             res.cookie("jwt", token, {
-                signed:true,
-                httpOnly:true,
-                maxAge: 1000*60*60
+                signed: true,
+                httpOnly: true,
+                maxAge: 1000 * 60 * 60
             });
             return res.redirect("/products");
         } else {
@@ -94,11 +94,25 @@ export async function login(req, res) {
     }
 }
 
+export async function logout(req, res) {
+    try{
+        const user = req.user
+        user.last_connection = new Date().toISOString();
+        await UsersDAO.update(user._id, user)
+    }catch (error) {
+        logger.error("Error logging the last connection:", error.message);
+    }
+
+    logger.info("User logging out")
+    res.clearCookie("jwt");
+    res.status(200).redirect("/sessions/login");
+}
+
 export const validateEmailInput = [
     body('email').isEmail()
 ];
 
-export async function resetPwRequest(req, res){
+export async function resetPwRequest(req, res) {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -108,10 +122,10 @@ export async function resetPwRequest(req, res){
 
     logger.info("Solicitando cambio de contraseña...")
 
-    try{
+    try {
         const { email } = req.body
         const user = await UsersDAO.getByEmail(email)
-        if(!user){
+        if (!user) {
             logger.error("Email no registrado")
             return res.status(400).json({ error: "Email no registrado" });
         }
@@ -123,15 +137,15 @@ export async function resetPwRequest(req, res){
         const iv = encryptedIdAndDate.iv
 
         const resetPwLink = `http://localhost:8080/sessions/resetPw/${encodeURIComponent(encryptedToken)}/${encodeURIComponent(iv)}`;
-        
+
         const success = await sendForgotPwMail(email, resetPwLink)
-        if(success){
+        if (success) {
             logger.info("Mail enviado")
-            return res.status(200).json({message: "Chequea tu mail para continuar con el cambio de contraseña"})
+            return res.status(200).json({ message: "Chequea tu mail para continuar con el cambio de contraseña" })
         }
-    }catch (error) {
+    } catch (error) {
         logger.error("Error solicitando el cambio de contraseña");
-        return res.status(500).json({error: "Error solicitando el cambio de contraseña: "});
+        return res.status(500).json({ error: "Error solicitando el cambio de contraseña: " });
     }
 }
 
@@ -139,7 +153,7 @@ export const validatePasswordInput = [
     body('password').isLength({ min: 6 })
 ]
 
-export async function resetPw(req, res){
+export async function resetPw(req, res) {
 
     const errors = validationResult(req);
 
@@ -150,61 +164,111 @@ export async function resetPw(req, res){
 
     logger.info("Reiniciando contraseña...")
 
-    try{
+    try {
         const { password } = req.body
         const hashedPassword = await bcrypt.hash(password, 10);
         const token = req.params.token;
         const iv = req.params.iv;
-    
+
         const decryptedToken = decryptData(token, ENCRYPTION_KEY, iv)
         const [userId, requestDateString] = decryptedToken.split('@');
-    
+
         const requestDate = new Date(parseInt(requestDateString));
-    
+
         const currentTime = new Date();
         const timeDiff = Math.abs(currentTime - requestDate);
         const diffInHours = Math.floor(timeDiff / (1000 * 60 * 60));
-    
+
         if (diffInHours >= 1) {
             logger.error("El link de reinicio de contraseña expiró")
             return res.status(400).json({ error: "El link de reinicio de contraseña expiró" });
         } else {
-            const success = await UsersDAO.update(userId, {password: hashedPassword})
-            if (success){
+            const success = await UsersDAO.update(userId, { password: hashedPassword })
+            if (success) {
                 logger.info("Contraseña actualizada con éxito")
                 return res.status(200).redirect("/sessions/login")
             }
         }
-    }catch (error) {
+    } catch (error) {
         logger.error("Error cambiando la contraseña");
         return res.status(500).redirect("/sessions/requestResetPw");
     }
-   
+
 }
 
 export async function toggleUserRole(req, res) {
     logger.info("Cambiando el rol del usuario")
     const user = await UsersDAO.getByID(req.params.uid)
-    if(!user){
+    if (!user) {
         logger.error("No se encontró usuario para cambiar de rol")
-        return res.status(401).json({error: "No se encontró usuario para cambiar de rol"})
-    } 
-    if(user.role === "user"){
-        const success = await UsersDAO.update(user._id, {role: "premium"})
-        if(success){
-            logger.info("Rol actualizado con éxito")+
-            res.status(200).json({message: "Rol actualizado con éxito"})
-        }
-    }else if(user.role === "premium"){
-        const success = await UsersDAO.update(user._id, {role: "user"})
-        if(success){
-            logger.info("Rol actualizado con éxito")+
-            res.status(200).json({message: "Rol actualizado con éxito"})
-        }
-    }else{
-        res.status(400).json({error: "El usuario no aplica para cambio de rol"})
+        return res.status(401).json({ error: "No se encontró usuario para cambiar de rol" })
     }
 
+    if (user.role == "admin") {
+        logger.error("El usuario no aplica para cambio de rol")
+        return res.status(400).json({ error: "El usuario no aplica para cambio de rol" })
+    }
+    console.log(user)
+
+    // Acá estaría dado el caso de que los documentos importados tienen determinado nombre
+    const requiredDocuments = ['identificacion.txt', 'domicilio.txt', 'estadoDeCuenta.txt'];
+    const uploadedDocuments = user.documents.map(doc => doc.name);
+    const hasAllDocuments = requiredDocuments.every(doc => uploadedDocuments.includes(doc));
+    if (user.role === 'user' && !hasAllDocuments) {
+        logger.error('El usuario no ha terminado de procesar su documentación')
+        return res.status(400).json({ error: 'El usuario no ha terminado de procesar su documentación' });
+    }
+
+    const newRole = user.role == "user" ? "premium" : "user"
+    const success = await UsersDAO.update(user._id, { role: newRole })
+    if (success) {
+        logger.info("Rol actualizado con éxito")
+        res.status(200).json({ message: "Rol actualizado con éxito" })
+    }
+
+}
+
+export async function uploadFiles(req, res) {
+    try {
+        const userId = req.params.uid;
+        const user = await UsersDAO.getByID(userId);
+
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        if (!user.documents) {
+            user.documents = [];
+        }
+
+        const files = req.files;
+        console.log(files)
+        if (files.documents) {
+            files.documents.forEach(file => {
+                user.documents.push({ name: file.originalname, reference: file.path });
+            });
+            const success = await UsersDAO.update(userId, user)
+            if (success) {
+        console.log(user)
+                logger.info("Documentos subidos exitosamente")
+                res.status(200).json({ message: 'Documentos subidos exitosamente' });
+            }
+        }
+        if(files.profile){
+            logger.info("Imágen de perfil subida")
+            res.status(200).json({ message: 'Imágen de perfil subida exitosamente' });
+        }
+        if(files.product){
+            logger.info("Imágen de producto subida")
+            res.status(200).json({ message: 'Imágen de producto subida exitosamente' });
+        }
+
+
+    } catch (error) {
+        console.log(error)
+        logger.error('Error subiendo documentos:', error.message);
+        res.status(500).json({ error: 'Error subiendo documentos' });
+    }
 }
 
 export { validateLoginInput };
