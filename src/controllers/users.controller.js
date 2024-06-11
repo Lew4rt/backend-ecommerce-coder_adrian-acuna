@@ -3,12 +3,30 @@ import bcrypt from 'bcrypt';
 import UsersDAO from '../dao/users.dao.js';
 import jwt from "jsonwebtoken";
 import logger from '../logs/logger.js';
-import { sendForgotPwMail } from '../mailing/nodemailer.js';
+import { sendAccountDeletedForInactivityMail, sendForgotPwMail } from '../mailing/nodemailer.js';
 import { decryptData, encryptData } from '../utils/utils.js';
 import dotenv from 'dotenv'
+import { use } from 'chai';
 
 dotenv.config();
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY
+
+export async function getAllUsers(req, res) {
+    try {
+        const users = await UsersDAO.getAll()
+
+        const userSummary = users.map(user => ({
+            first_name: user.first_name,
+            email: user.email,
+            role: user.role
+        }));
+
+        return res.status(200).json(userSummary);
+    } catch (error) {
+        logger.error("Ocurrió un error retornando todos los usuarios:", error.message);
+        return res.status(400).json({ error: error.message });
+    }
+}
 
 const validateUserInput = [
     body('first_name').notEmpty(),
@@ -93,6 +111,8 @@ export async function login(req, res) {
         return res.status(500).redirect("/sessions/login");
     }
 }
+
+export { validateLoginInput };
 
 export async function logout(req, res) {
     try{
@@ -271,4 +291,29 @@ export async function uploadFiles(req, res) {
     }
 }
 
-export { validateLoginInput };
+export async function deleteInactiveUsers(req, res) {
+    const TWO_DAYS_IN_MS = 2 * 24 * 60 * 60 * 1000; // Dos días en milisegundos
+    const TEN_MINUTES_IN_MS = 10 * 60 * 1000; // 10 minutos en milisegundos
+
+    try {
+        const users = await UsersDAO.getAll();
+        const now = Date.now();
+
+        const inactiveUsers = users.filter(user => {
+            const lastConnection = new Date(user.last_connection).getTime();
+            return now - lastConnection > TEN_MINUTES_IN_MS;
+        });
+
+        for (const user of inactiveUsers) {
+            await sendAccountDeletedForInactivityMail(user.email, user.first_name);
+            await UsersDAO.delete(user._id);
+        }
+
+        logger.info(`Deleted ${inactiveUsers.length} inactive users.`);
+        return res.status(200).json({ message: `Deleted ${inactiveUsers.length} inactive users.` });
+    } catch (error) {
+        console.log(error)
+        logger.error("Error deleting inactive users:", error.message);
+        return res.status(500).json({ error: error.message });
+    }
+}

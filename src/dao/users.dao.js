@@ -2,6 +2,13 @@ import users from "./models/users.schema.js";
 
 class UsersDAO {
 
+    static async getAll() {
+        try {
+            return await users.find()
+        } catch (error){
+            throw new Error("Error obteniendo todos los usuarios: " + error.message)
+        }
+    }
     static async getByEmail(email) {
         try {
             return await users.findOne({ email }); 
