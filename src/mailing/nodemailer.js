@@ -11,6 +11,285 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+export async function sendProductDeletedMail(receiverEmail, receiverName, productName) {
+  const info = await transporter.sendMail({
+    from: '"Lewi de LyJ Accesorios" <lewosfera@gmail.com>',
+    to: receiverEmail,
+    subject: "Producto eliminado",
+    html: `
+      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
+        <head>
+        <title></title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <!--[if !mso]>-->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!--<![endif]-->
+        <meta name="x-apple-disable-message-reformatting" content="" />
+        <meta content="target-densitydpi=device-dpi" name="viewport" />
+        <meta content="true" name="HandheldFriendly" />
+        <meta content="width=device-width" name="viewport" />
+        <meta name="format-detection" content="telephone=no, date=no, address=no, email=no, url=no" />
+        <style type="text/css">
+        table {
+        border-collapse: separate;
+        table-layout: fixed;
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt
+        }
+        table td {
+        border-collapse: collapse
+        }
+        .ExternalClass {
+        width: 100%
+        }
+        .ExternalClass,
+        .ExternalClass p,
+        .ExternalClass span,
+        .ExternalClass font,
+        .ExternalClass td,
+        .ExternalClass div {
+        line-height: 100%
+        }
+        body, a, li, p, h1, h2, h3 {
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+        }
+        html {
+        -webkit-text-size-adjust: none !important
+        }
+        body, #innerTable {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale
+        }
+        #innerTable img+div {
+        display: none;
+        display: none !important
+        }
+        img {
+        Margin: 0;
+        padding: 0;
+        -ms-interpolation-mode: bicubic
+        }
+        h1, h2, h3, p, a {
+        line-height: inherit;
+        overflow-wrap: normal;
+        white-space: normal;
+        word-break: break-word
+        }
+        a {
+        text-decoration: none
+        }
+        h1, h2, h3, p {
+        min-width: 100%!important;
+        width: 100%!important;
+        max-width: 100%!important;
+        display: inline-block!important;
+        border: 0;
+        padding: 0;
+        margin: 0
+        }
+        a[x-apple-data-detectors] {
+        color: inherit !important;
+        text-decoration: none !important;
+        font-size: inherit !important;
+        font-family: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important
+        }
+        u + #body a {
+        color: inherit;
+        text-decoration: none;
+        font-size: inherit;
+        font-family: inherit;
+        font-weight: inherit;
+        line-height: inherit;
+        }
+        a[href^="mailto"],
+        a[href^="tel"],
+        a[href^="sms"] {
+        color: inherit;
+        text-decoration: none
+        }
+        img,p{margin:0;Margin:0;font-family:Albert Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:24px;font-weight:400;font-style:normal;font-size:14px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#111;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px}h1{margin:0;Margin:0;font-family:Roboto,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:28px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h2{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:30px;font-weight:400;font-style:normal;font-size:24px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h3{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:26px;font-weight:400;font-style:normal;font-size:20px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}
+        </style>
+        <style type="text/css">
+        @media (min-width: 481px) {
+        .hd { display: none!important }
+        }
+        </style>
+        <style type="text/css">
+        @media (max-width: 480px) {
+        .hm { display: none!important }
+        }
+        </style>
+        <style type="text/css">
+        @media (min-width: 481px) {
+        h1,img,p{margin:0;Margin:0}.t24,.t4{overflow:hidden!important}img,p{font-family:Albert Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:24px;font-weight:400;font-style:normal;font-size:14px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#111;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px}h1{font-family:Roboto,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:28px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h2,h3{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;font-weight:400;font-style:normal;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h2{line-height:30px;font-size:24px}h3{line-height:26px;font-size:20px}.t3{mso-line-height-alt:100px!important;line-height:100px!important;display:block!important}.t4{border-top-left-radius:14px!important;border-top-right-radius:14px!important;width:600px!important}.t11,.t15,.t19,.t22,.t24,.t7{width:540px!important}.t24{border-bottom-right-radius:14px!important;border-bottom-left-radius:14px!important}
+        }
+        </style>
+        <style type="text/css" media="screen and (min-width:481px)">.moz-text-html img,.moz-text-html p{margin:0;Margin:0;font-family:Albert Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:24px;font-weight:400;font-style:normal;font-size:14px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#111;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px}.moz-text-html h1{margin:0;Margin:0;font-family:Roboto,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:28px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}.moz-text-html h2{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:30px;font-weight:400;font-style:normal;font-size:24px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}.moz-text-html h3{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:26px;font-weight:400;font-style:normal;font-size:20px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}.moz-text-html .t3{mso-line-height-alt:100px!important;line-height:100px!important;display:block!important}.moz-text-html .t4{border-top-left-radius:14px!important;border-top-right-radius:14px!important;overflow:hidden!important;width:600px!important}.moz-text-html .t24{border-bottom-right-radius:14px!important;border-bottom-left-radius:14px!important;overflow:hidden!important;width:540px!important}.moz-text-html .t11,.moz-text-html .t15,.moz-text-html .t19,.moz-text-html .t22,.moz-text-html .t7{width:540px!important}</style>
+        <!--[if !mso]>-->
+        <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400&amp;display=swap" rel="stylesheet" type="text/css" />
+        <!--<![endif]-->
+        <!--[if mso]>
+        <style type="text/css">
+        img,p{margin:0;Margin:0;font-family:Albert Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:24px;font-weight:400;font-style:normal;font-size:14px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#111;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px}h1{margin:0;Margin:0;font-family:Roboto,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:28px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h2{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:30px;font-weight:400;font-style:normal;font-size:24px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h3{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:26px;font-weight:400;font-style:normal;font-size:20px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}div.t3{mso-line-height-alt:100px !important;line-height:100px !important;display:block !important}td.t4{border-top-left-radius:14px !important;border-top-right-radius:14px !important;overflow:hidden !important}td.t24{border-bottom-right-radius:14px !important;border-bottom-left-radius:14px !important;overflow:hidden !important}
+        </style>
+        <![endif]-->
+        <!--[if mso]>
+        <xml>
+        <o:OfficeDocumentSettings>
+        <o:AllowPNG/>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+        </xml>
+        <![endif]-->
+        </head>
+        <body id="body" class="t28" style="min-width:100%;Margin:0px;padding:0px;background-color:#292929;"><div class="t27" style="background-color:#292929;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" align="center"><tr><td class="t26" style="font-size:0;line-height:0;mso-line-height-rule:exactly;background-color:#292929;" valign="top" align="center">
+        <!--[if mso]>
+        <v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false">
+        <v:fill color="#292929"/>
+        </v:background>
+        <![endif]-->
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" align="center" id="innerTable"><tr><td><div class="t3" style="mso-line-height-rule:exactly;font-size:1px;display:none;">&nbsp;&nbsp;</div></td></tr><tr><td>
+        <!--[if mso]>
+        <table class="t5" role="presentation" cellpadding="0" cellspacing="0" align="center">
+        <![endif]-->
+        <!--[if !mso]>-->
+        <table class="t5" role="presentation" cellpadding="0" cellspacing="0" style="Margin-left:auto;Margin-right:auto;">
+        <!--<![endif]-->
+        <tr>
+        <!--[if mso]>
+        <td class="t4" style="background-color:#FF8FB8;width:600px;padding:40px 0 40px 0;">
+        <![endif]-->
+        <!--[if !mso]>-->
+        <td class="t4" style="background-color:#FF8FB8;width:480px;padding:40px 0 40px 0;">
+        <!--<![endif]-->
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td>
+        <!--[if mso]>
+        <table class="t2" role="presentation" cellpadding="0" cellspacing="0" align="center">
+        <![endif]-->
+        <!--[if !mso]>-->
+        <table class="t2" role="presentation" cellpadding="0" cellspacing="0" style="Margin-left:auto;Margin-right:auto;">
+        <!--<![endif]-->
+        <tr>
+        <!--[if mso]>
+        <td class="t1" style="width:60px;">
+        <![endif]-->
+        <!--[if !mso]>-->
+        <td class="t1" style="width:60px;">
+        <!--<![endif]-->
+        <div style="font-size:0px;"><img class="t0" style="display:block;border:0;height:auto;width:100%;Margin:0;max-width:100%;" width="60" height="60" alt="" src="https://babcb34f-98e3-4c15-ab83-e13b6ca68592.b-cdn.net/e/aefd30b6-ed4c-4743-b8e7-63e9d91052a4/ae60a536-f84c-4fcb-8854-474a04a93530.png"/></div></td>
+        </tr></table>
+        </td></tr></table></td>
+        </tr></table>
+        </td></tr><tr><td>
+        <!--[if mso]>
+        <table class="t25" role="presentation" cellpadding="0" cellspacing="0" align="center">
+        <![endif]-->
+        <!--[if !mso]>-->
+        <table class="t25" role="presentation" cellpadding="0" cellspacing="0" style="Margin-left:auto;Margin-right:auto;">
+        <!--<![endif]-->
+        <tr>
+        <!--[if mso]>
+        <td class="t24" style="background-color:#FFFFFF;width:600px;padding:40px 30px 40px 30px;">
+        <![endif]-->
+        <!--[if !mso]>-->
+        <td class="t24" style="background-color:#FFFFFF;width:420px;padding:40px 30px 40px 30px;">
+        <!--<![endif]-->
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td>
+        <!--[if mso]>
+        <table class="t8" role="presentation" cellpadding="0" cellspacing="0" align="center">
+        <![endif]-->
+        <!--[if !mso]>-->
+        <table class="t8" role="presentation" cellpadding="0" cellspacing="0" style="Margin-left:auto;Margin-right:auto;">
+        <!--<![endif]-->
+        <tr>
+        <!--[if mso]>
+        <td class="t7" style="width:540px;">
+        <![endif]-->
+        <!--[if !mso]>-->
+        <td class="t7" style="width:420px;">
+        <!--<![endif]-->
+        <p class="t6" style="margin:0;Margin:0;font-family:Albert Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:24px;font-weight:400;font-style:normal;font-size:24px;text-decoration:none;text-transform:none;direction:ltr;color:#111111;text-align:left;mso-line-height-rule:exactly;">Hola ${receiverName},</p></td>
+        </tr></table>
+        </td></tr><tr><td><div class="t9" style="mso-line-height-rule:exactly;mso-line-height-alt:20px;line-height:20px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td>
+        <!--[if mso]>
+        <table class="t12" role="presentation" cellpadding="0" cellspacing="0" align="center">
+        <![endif]-->
+        <!--[if !mso]>-->
+        <table class="t12" role="presentation" cellpadding="0" cellspacing="0" style="Margin-left:auto;Margin-right:auto;">
+        <!--<![endif]-->
+        <tr>
+        <!--[if mso]>
+        <td class="t11" style="width:540px;">
+        <![endif]-->
+        <!--[if !mso]>-->
+        <td class="t11" style="width:420px;">
+        <!--<![endif]-->
+        <p class="t10" style="margin:0;Margin:0;font-family:Albert Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:24px;font-weight:400;font-style:normal;font-size:14px;text-decoration:none;text-transform:none;direction:ltr;color:#111111;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;">Le informamos que el producto "${productName}" publicado por usted en la web de L&J Accesorios fué removido.</p></td>
+        </tr></table>
+        </td></tr><tr><td><div class="t14" style="mso-line-height-rule:exactly;mso-line-height-alt:20px;line-height:20px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td>
+        <!--[if mso]>
+        <table class="t16" role="presentation" cellpadding="0" cellspacing="0" align="center">
+        <![endif]-->
+        <!--[if !mso]>-->
+        <table class="t16" role="presentation" cellpadding="0" cellspacing="0" style="Margin-left:auto;Margin-right:auto;">
+        <!--<![endif]-->
+        <tr>
+        <!--[if mso]>
+        <td class="t15" style="width:540px;">
+        <![endif]-->
+        <!--[if !mso]>-->
+        <td class="t15" style="width:420px;">
+        <!--<![endif]-->
+        <p class="t13" style="margin:0;Margin:0;font-family:Albert Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:24px;font-weight:400;font-style:normal;font-size:14px;text-decoration:none;text-transform:none;direction:ltr;color:#111111;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;">Si crees que esto es un error por favor comunicate con nosotros desde la web.</p></td>
+        </tr></table>
+        </td></tr><tr><td><div class="t17" style="mso-line-height-rule:exactly;mso-line-height-alt:20px;line-height:20px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td>
+        <!--[if mso]>
+        <table class="t20" role="presentation" cellpadding="0" cellspacing="0" align="center">
+        <![endif]-->
+        <!--[if !mso]>-->
+        <table class="t20" role="presentation" cellpadding="0" cellspacing="0" style="Margin-left:auto;Margin-right:auto;">
+        <!--<![endif]-->
+        <tr>
+        <!--[if mso]>
+        <td class="t19" style="width:540px;">
+        <![endif]-->
+        <!--[if !mso]>-->
+        <td class="t19" style="width:420px;">
+        <!--<![endif]-->
+        <p class="t18" style="margin:0;Margin:0;font-family:Albert Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:24px;font-weight:400;font-style:normal;font-size:14px;text-decoration:none;text-transform:none;direction:ltr;color:#111111;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;">Gracias!</p></td>
+        </tr></table>
+        </td></tr><tr><td>
+        <!--[if mso]>
+        <table class="t23" role="presentation" cellpadding="0" cellspacing="0" align="center">
+        <![endif]-->
+        <!--[if !mso]>-->
+        <table class="t23" role="presentation" cellpadding="0" cellspacing="0" style="Margin-left:auto;Margin-right:auto;">
+        <!--<![endif]-->
+        <tr>
+        <!--[if mso]>
+        <td class="t22" style="width:540px;">
+        <![endif]-->
+        <!--[if !mso]>-->
+        <td class="t22" style="width:420px;">
+        <!--<![endif]-->
+        <p class="t21" style="margin:0;Margin:0;font-family:Albert Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:24px;font-weight:400;font-style:normal;font-size:14px;text-decoration:none;text-transform:none;direction:ltr;color:#111111;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;">El equipo de L&amp;J Accesorios</p></td>
+        </tr></table>
+        </td></tr></table></td>
+        </tr></table>
+        </td></tr></table></td></tr></table></div></body>
+        </html>
+    `
+  });
+  if (info) {
+    return true
+  }
+}
+
 export async function sendAccountDeletedForInactivityMail(receiverEmail, receiverName) {
   const info = await transporter.sendMail({
     from: '"Lewi de LyJ Accesorios" <lewosfera@gmail.com>',

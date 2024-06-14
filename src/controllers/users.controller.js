@@ -228,7 +228,6 @@ export async function toggleUserRole(req, res) {
         logger.error("El usuario no aplica para cambio de rol")
         return res.status(400).json({ error: "El usuario no aplica para cambio de rol" })
     }
-    console.log(user)
 
     // Acá estaría dado el caso de que los documentos importados tienen determinado nombre
     const requiredDocuments = ['identificacion.txt', 'domicilio.txt', 'estadoDeCuenta.txt'];
@@ -262,14 +261,12 @@ export async function uploadFiles(req, res) {
         }
 
         const files = req.files;
-        console.log(files)
         if (files.documents) {
             files.documents.forEach(file => {
                 user.documents.push({ name: file.originalname, reference: file.path });
             });
             const success = await UsersDAO.update(userId, user)
             if (success) {
-        console.log(user)
                 logger.info("Documentos subidos exitosamente")
                 res.status(200).json({ message: 'Documentos subidos exitosamente' });
             }
@@ -285,7 +282,6 @@ export async function uploadFiles(req, res) {
 
 
     } catch (error) {
-        console.log(error)
         logger.error('Error subiendo documentos:', error.message);
         res.status(500).json({ error: 'Error subiendo documentos' });
     }
@@ -312,7 +308,6 @@ export async function deleteInactiveUsers(req, res) {
         logger.info(`Deleted ${inactiveUsers.length} inactive users.`);
         return res.status(200).json({ message: `Deleted ${inactiveUsers.length} inactive users.` });
     } catch (error) {
-        console.log(error)
         logger.error("Error deleting inactive users:", error.message);
         return res.status(500).json({ error: error.message });
     }

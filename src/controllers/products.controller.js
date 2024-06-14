@@ -1,5 +1,6 @@
 import ProductsDAO from '../dao/products.dao.js';
 import logger from '../logs/logger.js';
+import { sendProductDeletedMail } from '../mailing/nodemailer.js';
 import { generateFakeProduct } from '../utils/utils.js';
 
 export async function getAllProducts(req, res) {
@@ -98,9 +99,12 @@ export async function deleteProduct(req, res) {
 
       if(req.user.role === "premium"){
          const productToBeDeleted = await ProductsDAO.getById(productId)
-         if(productToBeDeleted.owner !== req.user._id){
+         if(productToBeDeleted.owner !== req.user._id.toString()){
             logger.error("Usuario no autorizado")
             return res.status(403).json({ error: 'Unauthorized' });
+         }else{
+            const success = await sendProductDeletedMail(req.user.email, req.user.first_name, productToBeDeleted.title)
+            success && logger.info('Mail enviado al dueño del producto, informando de su eliminación')
          }
       }
 
