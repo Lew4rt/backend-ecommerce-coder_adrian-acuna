@@ -129,9 +129,11 @@ export async function deleteAllProductsFromCart(req, res) {
     }
 }
 
-// La feature de purchase será testeable solo vía postman por el momento
 export async function purchaseCart(req, res) {
+    logger.info("Procesando datos de compra...")
+
     const cartId = req.params.cid;
+    console.log("cartId in purchaseCart: ", cartId)
     try {
         const cart = await CartsDAO.getById(cartId);
         const purchaser = req.user.email;
@@ -139,29 +141,38 @@ export async function purchaseCart(req, res) {
         let failedProducts = [];
         let totalAmount = 0;
 
+        let ticketId = null;
         // Separo los items con y sin stock, y actualizo el stock de cada producto
-        for (const item of cart.products) {
-            const product = await ProductsDAO.getById(item.productId);
-            if (product.stock >= item.quantity) {
-                totalAmount += product.price * item.quantity;
-                const newStock = product.stock - item.quantity;
-                await ProductsDAO.update(item.productId, {stock: newStock});
-            } else {
-                failedProducts.push(item.productId);
+        if(cart.products.length > 0){
+            for (const item of cart.products) {
+                const product = await ProductsDAO.getById(item.productId);
+                if (product.stock >= item.quantity) {
+                    totalAmount += product.price * item.quantity;
+                    const newStock = product.stock - item.quantity;
+                    await ProductsDAO.update(item.productId, {stock: newStock});
+                } else {
+                    failedProducts.push(item.productId);
+                }
             }
+    
+            ticketId = await TicketsDAO.add(totalAmount, purchaser);
+            if(ticketId){
+                logger.info("Carrito comprado con éxito")
+            }
+        }else{
+            logger.error("No existen productos en el carrito")
+            return res.status(400).message("No existen productos en el carrito")
         }
-
-        const ticketId = await TicketsDAO.add(totalAmount, purchaser);
 
         // Actualizo el carrito para contener solo los productos que no se pudieron comprar
         if (failedProducts.length > 0) {
             const filteredProducts = cart.products.filter(item => !failedProducts.includes(item.productId));
             await CartsDAO.updateProducts(cartId, filteredProducts);
+            logger.error("Los siguientes productos no fueron comprados: ", failedProducts)
         } else {
             await CartsDAO.deleteAllProducts(cartId);
         }
-
-        res.json({ ticketId: ticketId, failedProducts: failedProducts });
+        return res.status(200).redirect(`/carts/cartPurchased/${ticketId}`)
     } catch (error) {
         res.status(400).json({ error: error.message });
     }

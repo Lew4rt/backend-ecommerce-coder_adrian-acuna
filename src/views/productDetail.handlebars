@@ -1,8 +1,11 @@
-<div>
-  <h1>{{product.title}}</h1>
-  <p>{{product.description}}</p>
-  <p>Price: {{product.price}}</p>
-  <p>Stock: {{product.stock}}</p>
+<h1>Carrito de productos</h1>
+<ul>
+  {{#each cart.products}}
+    <li>
+      <a href="/products/{{this.productId._id}}">
+        {{this.productId.title}} - {{this.productId.description}}
+      </a>
+    </li>
     &nbsp;
-  <a href="/products">Volver a los productos</a>
-</div>
+  {{/each}}
+</ul>

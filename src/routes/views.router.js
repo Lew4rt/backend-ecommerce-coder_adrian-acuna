@@ -3,6 +3,7 @@ import ProductsDAO from '../dao/products.dao.js';
 import CartsDAO from '../dao/carts.dao.js';
 import UsersDAO from '../dao/users.dao.js';
 import jwt from 'jsonwebtoken';
+import TicketsDAO from '../dao/tickets.dao.js';
 
 const viewsRouter = express.Router();
 
@@ -132,6 +133,30 @@ viewsRouter.get('/carts/:cid', isAuthenticated, async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+viewsRouter.get('/carts/cartPurchased/:pchid', async (req, res) => {
+    try {
+        const ticketId = req.params.pchid
+        const ticket = await TicketsDAO.getById(ticketId)
+
+        res.render('confirmPurchase', { ticket })
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
+viewsRouter.get('/carts/payment/:cid', async (req, res) => {
+    try {
+        const cartId = req.params.cid;
+        
+        console.log("cartId in viewrouter payment:", cartId)
+        const cart = await CartsDAO.getById(cartId);
+
+        res.render('payment', { cart })
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
 
 viewsRouter.get('/sessions/register', async (req, res) => {
     try {
